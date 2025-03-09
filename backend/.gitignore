@@ -1,0 +1,20 @@
+# Backend 用の無視ファイル
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Frontend 用の無視ファイル
+node_modules/
+dist/
+.next/
+
+echo "node_modules/" >> .gitignore
+echo ".env" >> .gitignore
+echo ".DS_Store" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo ".vscode/" >> .gitignore
+echo "docker-compose.yaml" >> .gitignore
+echo "package-lock.json" >> .gitignore
+echo "package.json" >> .gitignore
