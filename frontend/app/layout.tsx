@@ -4,7 +4,7 @@ import { M_PLUS_Rounded_1c } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
 import Navigation from "@/components/navigation"
-import { AuthProvider } from "@/lib/auth"
+import { AuthProvider } from "../lib/authProvider"
 
 const mplus = M_PLUS_Rounded_1c({
   weight: ["400", "500", "700"],
