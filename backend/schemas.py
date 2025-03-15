@@ -1,5 +1,5 @@
-from pydantic import BaseModel, validator
-from datetime import date
+from pydantic import BaseModel ,field_validator
+from datetime import datetime, date
 from typing import Dict, Optional
 from uuid import UUID
 
@@ -31,11 +31,86 @@ class HealthRecordResponse(HealthRecordCreate):
     user_id: str 
 
         # UUID を str に変換するための validator
-    @validator('id', 'user_id', pre=True)
+    @field_validator('id', 'user_id', mode='before')
     def convert_uuid_to_str(cls, value):
         if isinstance(value, UUID):
             return str(value)  # UUID を文字列に変換
         return value
 
     class Config:
-        orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+        from_attributes = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+
+# レシピスキーマ
+class RecipeBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    cooking_time: Optional[int] = None
+    difficulty: Optional[str] = None
+    image_url: Optional[str] = None
+
+class RecipeCreate(RecipeBase):
+    pass
+
+class RecipeResponse(RecipeBase):
+    id: UUID
+    created_at: datetime
+
+    class Config:
+        from_attributes = True  # ORM 互換
+
+# 食事記録スキーマ
+class MealBase(BaseModel):
+    user_id: UUID
+    date: date
+    meal_type: str  # breakfast, lunch, dinner
+    recipe_id: Optional[UUID] = None
+
+class MealCreate(MealBase):
+    pass
+
+class MealResponse(MealBase):
+    id: UUID
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# 食事プランスキーマ
+class MealPlanBase(BaseModel):
+    user_id: UUID
+    start_date: date
+    end_date: date
+
+class MealPlanCreate(MealPlanBase):
+    pass
+
+class MealPlanResponse(MealPlanBase):
+    id: UUID
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# 食事プランとレシピの中間テーブル
+class MealPlanRecipeBase(BaseModel):
+    meal_plan_id: UUID
+    recipe_id: UUID
+
+class MealPlanRecipeCreate(MealPlanRecipeBase):
+    pass
+
+class MealPlanRecipeResponse(MealPlanRecipeBase):
+    pass
+
+# 栄養情報タグスキーマ
+class MealNutritionTagBase(BaseModel):
+    name: str
+
+class MealNutritionTagCreate(MealNutritionTagBase):
+    pass
+
+class MealNutritionTagResponse(MealNutritionTagBase):
+    id: UUID
+
+    class Config:
+        from_attributes = True
