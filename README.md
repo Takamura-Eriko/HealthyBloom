@@ -9,7 +9,6 @@
 ## 🚀 **アプリのコア機能**
 
 ### 🏥 **1. 健康診断結果の管理**
-- ✅ **画像アップロード（OCR解析）**
 - ✅ **手入力での健診データ登録**
 - ✅ **異常値の自動ハイライト表示**
 - ✅ **過去データの保存 & グラフ化**
@@ -29,11 +28,28 @@
 | **データベース** | PostgreSQL（リレーショナルDB） |
 | **ORM** | SQLAlchemy（DB操作） |
 | **認証** | Firebase Authentication（JWTトークン管理） |
-| **画像解析** | Google Vision API（OCR解析） |
 | **食事提案** | Python（ルールベース + AIモデル拡張可） |
 | **非同期処理** | Celery + Redis（OCR解析やメニュー生成を高速化） |
 | **デプロイ** | AWS Lambda / Docker（短期間で展開可能） |
 
+## **API設計**
+### **エンドポイントのルール**
+健康診断データ
+〇GET /health-records` （健康診断データの取得）
+〇POST /health-records` （健康診断データの登録）
+〇PUT /health-records/{id}` （健康診断データの更新）
+〇DELETE /health-records/{id}` （健康診断データの削除）
+
+ユーザー情報
+POST	/auth/login	Firebase JWT 認証
+GET	/user/profile	ユーザー情報取得
+POST	/user/update	ユーザー情報更新
+
+食事メニュー情報
+GET	/plan/meal	簡易食事プラン取得
+GET	/plan/exercise	簡易運動プラン取得
+POST	/progress/log	体重記録登録
+GET	/progress/report	進捗データ取得
 ---
 
 📌 **このアプリは、健康管理をより簡単で効果的にすることを目指しています！**  
