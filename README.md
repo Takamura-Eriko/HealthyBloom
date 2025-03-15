@@ -32,104 +32,116 @@
 | **非同期処理** | Celery + Redis（OCR解析やメニュー生成を高速化） |
 | **デプロイ** | AWS Lambda / Docker（短期間で展開可能） |
 
+
 ## **API設計**
+
 ### **エンドポイントのルール**
-健康診断データ
-〇GET /health-records` （健康診断データの取得）
-〇POST /health-records` （健康診断データの登録）
-〇PUT /health-records/{id}` （健康診断データの更新）
-〇DELETE /health-records/{id}` （健康診断データの削除）
 
-ユーザー情報
-POST	/auth/login	Firebase JWT 認証
-GET	/user/profile	ユーザー情報取得
-POST	/user/update	ユーザー情報更新
+#### 健康診断データ
+- **GET** `/health-records` － 健康診断データの取得
+- **POST** `/health-records` － 健康診断データの登録
+- **PUT** `/health-records/{id}` － 健康診断データの更新
+- **DELETE** `/health-records/{id}` － 健康診断データの削除
 
-食事メニュー情報
-GET	/plan/meal	簡易食事プラン取得
-GET	/plan/exercise	簡易運動プラン取得
-POST	/progress/log	体重記録登録
-GET	/progress/report	進捗データ取得
+#### ユーザー情報
+- **POST** `/auth/login` － Firebase JWT 認証
+- **GET** `/user/profile` － ユーザー情報取得
+- **POST** `/user/update` － ユーザー情報更新
+
+#### 食事メニュー情報
+- **GET** `/plan/meal` － 簡易食事プラン取得
+- **GET** `/plan/exercise` － 簡易運動プラン取得
+- **POST** `/progress/log` － 体重記録登録
+- **GET** `/progress/report` － 進捗データ取得
+
 ---
 
-📌 **このアプリは、健康管理をより簡単で効果的にすることを目指しています！**  
-今後のアップデートでさらなる機能拡張を予定しています 🚀✨
+## **コーディング規約**
 
-コーディング規約
-1. プロジェクト構成
-バックエンド構成:
-app/：アプリケーションのメインコード
-models/：SQLAlchemyのモデル定義
-schemas/：Pydanticモデル（リクエスト/レスポンスバリデーション）
-services/：ビジネスロジック
-api/：FastAPIのエンドポイント
-utils/：ユーティリティ関数（OCR解析、データ処理）
-tests/：テストコード
-unit_tests/：ユニットテスト
-integration_tests/：統合テスト
-docker/：Docker関連ファイル（Dockerfile、docker-compose.yml）
-2. 命名規則
-ファイル名: スネークケース（例: user_service.py, ocr_parser.py）
-クラス名: キャメルケース（例: HealthRecord, MealPlanService）
-関数名/変数名: スネークケース（例: parse_ocr_data, generate_meal_plan）
-3. コードの書き方
-インデント: 4スペース
-行の長さ: 1行は最大80文字。長すぎる場合は改行を使用。
-空白:
-演算子の前後にはスペースを1つ挿入（例: a + b, x = y）
-カンマの後には1スペースを挿入（例: create_user(name, age, email)）
-変数や関数の引数、戻り値に型アノテーションを使用（例: def get_user_by_id(user_id: int) -> User:）
-4. データベース
-SQLAlchemyモデル:
-モデルクラスにはBaseを継承（例: class User(Base):）
-テーブル名は常に小文字のスネークケース（例: users, meal_plans）
-外部キーは関連するモデルをForeignKeyとして定義
-DB接続:
-DB接続の設定は.envファイルで管理し、SQLAlchemyの設定でロード（例: DATABASE_URL）
-トランザクション管理はsessionを使用し、適切にコミットまたはロールバックする
-5. API設計
-エンドポイント:
-エンドポイント名は動詞を避け、名詞を使ってリソースを表現（例: GET /health-records, POST /meal-plans）
-HTTPメソッドに適切な動作をマッピング（例: GETは取得、POSTは作成、PUTは更新、DELETEは削除）
-エラーハンドリング:
-不正なリクエストやデータに対しては適切なHTTPステータスコードを返す（例: 400 Bad Request、404 Not Found）
-エラーメッセージはJSON形式で返す（例: {"detail": "Invalid data"}）
-6. OCR解析
-Google Vision APIの使用:
-OCR解析は非同期で行い、CeleryとRedisを利用してバックグラウンドで処理
-OCR解析後の結果はデータベースに保存、必要に応じて補完や手入力を促す
-OCR処理はOCRServiceクラスで実装し、共通のインターフェースを提供
-7. 認証・認可
-Firebase Authentication:
-FirebaseのJWTトークンを使用してAPIリクエストを認証
-各エンドポイントで認証されたユーザーのみがアクセス可能
-APIリクエストヘッダーにAuthorization: Bearer <token>を設定
-8. テスト
-ユニットテスト:
-各サービス関数やユーティリティ関数のユニットテストを必ず作成
-FastAPIのTestClientを使ってAPIエンドポイントのテスト
-統合テスト:
-データベースや外部APIとの連携部分の統合テストを作成
-CI/CDパイプラインで自動テストを実行
-9. ドキュメンテーション
-API仕様書:
-FastAPIにはSwagger UI（/docs）とReDoc（/redoc）がデフォルトで組み込まれているため、それを活用
-エンドポイントのリクエスト/レスポンス例を記載
-各エンドポイントに説明を付けて、Swagger UIで自動生成されるドキュメントに反映
-コードコメント:
-複雑な処理やロジックには必ずコメントを記載
-クラスや関数には簡潔なドキュメンテーションコメント（例: """This function calculates..."""）
-10. デプロイ
-AWS Lambda:
-サーバーレス環境で動作するように、FastAPIをAWS Lambda用に設定（ZappaやAWS Chaliceを使用）
-AWS LambdaとAPI Gatewayを使ってデプロイ
-Docker:
-Dockerコンテナを使用してアプリケーションを環境に依存せず展開
-Dockerfileを使ってバックエンドをコンテナ化
-11. CI/CD
-GitHub Actions:
-プッシュやプルリクエスト時に自動でユニットテストを実行
-デプロイメント前にテストがすべて通過していることを確認
-自動デプロイメントを設定（例: AWSに自動でデプロイ）
+### 1. プロジェクト構成
+- **バックエンド構成:**
+  - `app/`：アプリケーションのメインコード
+  - `models/`：SQLAlchemyのモデル定義
+  - `schemas/`：Pydanticモデル（リクエスト/レスポンスバリデーション）
+  - `services/`：ビジネスロジック
+  - `api/`：FastAPIのエンドポイント
+  - `utils/`：ユーティリティ関数（OCR解析、データ処理）
+  - `tests/`：テストコード
+    - `unit_tests/`：ユニットテスト
+    - `integration_tests/`：統合テスト
+  - `docker/`：Docker関連ファイル（Dockerfile、docker-compose.yml）
+
+### 2. 命名規則
+- **ファイル名**: スネークケース（例: `user_service.py`, `ocr_parser.py`）
+- **クラス名**: キャメルケース（例: `HealthRecord`, `MealPlanService`）
+- **関数名/変数名**: スネークケース（例: `parse_ocr_data`, `generate_meal_plan`）
+
+### 3. コードの書き方
+- **インデント**: 4スペース
+- **行の長さ**: 1行は最大80文字。長すぎる場合は改行を使用。
+- **空白**:
+  - 演算子の前後にはスペースを1つ挿入（例: `a + b`, `x = y`）
+  - カンマの後には1スペースを挿入（例: `create_user(name, age, email)`）
+  - 変数や関数の引数、戻り値に型アノテーションを使用（例: `def get_user_by_id(user_id: int) -> User:`）
+
+### 4. データベース
+- **SQLAlchemyモデル**:
+  - モデルクラスには`Base`を継承（例: `class User(Base):`）
+  - テーブル名は常に小文字のスネークケース（例: `users`, `meal_plans`）
+  - 外部キーは関連するモデルを`ForeignKey`として定義
+- **DB接続**:
+  - DB接続の設定は`.env`ファイルで管理し、SQLAlchemyの設定でロード（例: `DATABASE_URL`）
+  - トランザクション管理は`session`を使用し、適切にコミットまたはロールバックする
+
+### 5. API設計
+- **エンドポイント**:
+  - エンドポイント名は動詞を避け、名詞を使ってリソースを表現（例: `GET /health-records`, `POST /meal-plans`）
+  - HTTPメソッドに適切な動作をマッピング（例: `GET`は取得、`POST`は作成、`PUT`は更新、`DELETE`は削除）
+- **エラーハンドリング**:
+  - 不正なリクエストやデータに対しては適切なHTTPステータスコードを返す（例: `400 Bad Request`, `404 Not Found`）
+  - エラーメッセージはJSON形式で返す（例: `{"detail": "Invalid data"}`）
+
+### 6. OCR解析
+- **Google Vision APIの使用**:
+  - OCR解析は非同期で行い、CeleryとRedisを利用してバックグラウンドで処理
+  - OCR解析後の結果はデータベースに保存、必要に応じて補完や手入力を促す
+  - OCR処理は`OCRService`クラスで実装し、共通のインターフェースを提供
+
+### 7. 認証・認可
+- **Firebase Authentication**:
+  - FirebaseのJWTトークンを使用してAPIリクエストを認証
+  - 各エンドポイントで認証されたユーザーのみがアクセス可能
+  - APIリクエストヘッダーに`Authorization: Bearer <token>`を設定
+
+### 8. テスト
+- **ユニットテスト**:
+  - 各サービス関数やユーティリティ関数のユニットテストを必ず作成
+  - FastAPIの`TestClient`を使ってAPIエンドポイントのテスト
+- **統合テスト**:
+  - データベースや外部APIとの連携部分の統合テストを作成
+  - CI/CDパイプラインで自動テストを実行
+
+### 9. ドキュメンテーション
+- **API仕様書**:
+  - FastAPIにはSwagger UI（`/docs`）とReDoc（`/redoc`）がデフォルトで組み込まれているため、それを活用
+  - エンドポイントのリクエスト/レスポンス例を記載
+  - 各エンドポイントに説明を付けて、Swagger UIで自動生成されるドキュメントに反映
+- **コードコメント**:
+  - 複雑な処理やロジックには必ずコメントを記載
+  - クラスや関数には簡潔なドキュメンテーションコメント（例: `"""This function calculates..."""`）
+
+### 10. デプロイ
+- **AWS Lambda**:
+  - サーバーレス環境で動作するように、FastAPIをAWS Lambda用に設定（ZappaやAWS Chaliceを使用）
+  - AWS LambdaとAPI Gatewayを使ってデプロイ
+- **Docker**:
+  - Dockerコンテナを使用してアプリケーションを環境に依存せず展開
+  - Dockerfileを使ってバックエンドをコンテナ化
+
+### 11. CI/CD
+- **GitHub Actions**:
+  - プッシュやプルリクエスト時に自動でユニットテストを実行
+  - デプロイメント前にテストがすべて通過していることを確認
+  - 自動デプロイメントを設定（例: AWSに自動でデプロイ）
 
 
