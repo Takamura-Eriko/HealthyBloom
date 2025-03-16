@@ -37,7 +37,7 @@ class HealthRecord(Base):
     liver_gpt = Column(Float)
     liver_r_gpt = Column(Float)
     anomalies = Column(JSON)
-    created_at = Column(String, default=date.today().isoformat())
+    created_at = Column(DateTime, default=func.now())
 
 # レシピモデル
 class Recipe(Base):

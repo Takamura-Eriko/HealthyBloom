@@ -7,14 +7,14 @@ from dotenv import load_dotenv
 # .env ファイルを読み込む
 load_dotenv()
 
-# データベース接続情報（環境変数から取得）
-DATABASE_URL = os.getenv("DATABASE_URL")
+# `postgresql://` を `postgresql+psycopg2://` に変換
+DATABASE_URL = os.getenv("DATABASE_URL", "").replace("postgresql://", "postgresql+psycopg2://")
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL が設定されていません！.env ファイルを確認してください。")
 
 # SQLAlchemy のエンジンを作成
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, echo=True)  # SQLログを出力
 
 # データベースセッションを作成
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
