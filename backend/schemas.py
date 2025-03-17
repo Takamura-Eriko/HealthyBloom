@@ -1,11 +1,26 @@
-from pydantic import BaseModel ,field_validator
+from pydantic import BaseModel, field_validator
 from datetime import datetime, date
 from typing import Dict, Optional
 from uuid import UUID
 
+# ユーザー作成スキーマ
+class UserBase(BaseModel):
+    email: str
+    name: str
+
+class UserCreate(UserBase):
+    password: str  # パスワードは作成時のみ必要
+
+class UserResponse(UserBase):
+    id: UUID
+    created_at: datetime
+
+    class Config:
+        orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
+
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):
-    user_id: str
+    user_id: UUID
     date: date
     age: int  # 年齢
     gender: str  # 性別
@@ -27,18 +42,18 @@ class HealthRecordCreate(BaseModel):
 
 # 健診データのレスポンススキーマ
 class HealthRecordResponse(HealthRecordCreate):
-    id: str
-    user_id: str 
+    id: UUID
+    user_id: UUID 
 
-        # UUID を str に変換するための validator
+    # UUID を str に変換する validator
     @field_validator('id', 'user_id', mode='before')
     def convert_uuid_to_str(cls, value):
         if isinstance(value, UUID):
-            return str(value)  # UUID を文字列に変換
+            return str(value)
         return value
 
     class Config:
-      orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+        orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
 
 class HealthRecordUpdate(BaseModel):
     date: Optional[date] = None
@@ -76,7 +91,7 @@ class RecipeResponse(RecipeBase):
     created_at: datetime
 
     class Config:
-        from_attributes = True  # ORM 互換
+        orm_mode = True  # ORM 互換
 
 # 食事記録スキーマ
 class MealBase(BaseModel):
@@ -93,7 +108,7 @@ class MealResponse(MealBase):
     created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 # 食事プランスキーマ
 class MealPlanBase(BaseModel):
@@ -109,7 +124,7 @@ class MealPlanResponse(MealPlanBase):
     created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 # 食事プランとレシピの中間テーブル
 class MealPlanRecipeBase(BaseModel):
@@ -134,4 +149,3 @@ class MealNutritionTagResponse(MealNutritionTagBase):
 
     class Config:
         from_attributes = True
-
