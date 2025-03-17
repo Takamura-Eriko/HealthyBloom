@@ -38,7 +38,27 @@ class HealthRecordResponse(HealthRecordCreate):
         return value
 
     class Config:
-        from_attributes = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+      orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+
+class HealthRecordUpdate(BaseModel):
+    date: Optional[date] = None
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    bmi: Optional[float] = None
+    blood_pressure_systolic: Optional[int] = None
+    blood_pressure_diastolic: Optional[int] = None
+    blood_sugar: Optional[float] = None
+    hba1c: Optional[float] = None
+    cholesterol_total: Optional[float] = None
+    cholesterol_hdl: Optional[float] = None
+    cholesterol_ldl: Optional[float] = None
+    triglycerides: Optional[float] = None
+    liver_got: Optional[float] = None
+    liver_gpt: Optional[float] = None
+    liver_r_gpt: Optional[float] = None
+    anomalies: Optional[dict] = None
 
 # レシピスキーマ
 class RecipeBase(BaseModel):
@@ -114,3 +134,4 @@ class MealNutritionTagResponse(MealNutritionTagBase):
 
     class Config:
         from_attributes = True
+
