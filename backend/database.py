@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 # .env ファイルを読み込む
 load_dotenv()
 
+
 # データベース接続情報（環境変数から取得）
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -14,6 +15,7 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL が設定されていません！.env ファイルを確認してください。")
 
 # SQLAlchemy のエンジンを作成
+
 engine = create_engine(DATABASE_URL)
 
 # データベースセッションを作成

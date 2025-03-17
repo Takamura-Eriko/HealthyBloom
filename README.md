@@ -54,7 +54,6 @@
 - **POST** `/progress/log` － 体重記録登録
 - **GET** `/progress/report` － 進捗データ取得
 
----
 
 ## **コーディング規約**
 
