@@ -3,13 +3,14 @@ from logging.config import fileConfig
 from sqlalchemy import create_engine, pool
 from alembic import context
 from database import Base
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 # Alembic の設定オブジェクト
 config = context.config
 
 # .env を読み込む
-load_dotenv()
+if not load_dotenv(find_dotenv()):
+    raise RuntimeError(".env ファイルが見つかりません！環境変数を正しく設定してください。")
 
 # .env の DATABASE_URL を取得
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -40,11 +41,14 @@ def run_migrations_offline():
 
 def run_migrations_online():
     """Run migrations in 'online' mode."""
-    connectable = create_engine(DATABASE_URL, poolclass=pool.NullPool)
-    with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
-        with context.begin_transaction():
-            context.run_migrations()
+    connectable = create_engine(DATABASE_URL, poolclass=pool.NullPool, future=True)
+    try:
+        with connectable.connect() as connection:
+            context.configure(connection=connection, target_metadata=target_metadata)
+            with context.begin_transaction():
+                context.run_migrations()
+    finally:
+        connectable.dispose()  # 接続を確実に閉じる
 
 if context.is_offline_mode():
     run_migrations_offline()
