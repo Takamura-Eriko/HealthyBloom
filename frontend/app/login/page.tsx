@@ -1,5 +1,5 @@
 "use client"
-
+import React from 'react';
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -45,7 +45,9 @@ export default function LoginPage() {
         description: "HealthTrackerへようこそ！",
       })
       router.push("/")
-    } catch (error: any) {
+      
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
       console.error("ログインエラー:", error)
 
       let errorMessage = "ログインに失敗しました"

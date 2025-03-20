@@ -2,6 +2,7 @@ from pydantic import BaseModel, validator
 from datetime import date
 from typing import Dict, Optional
 from uuid import UUID
+from pydantic import BaseModel, validator, ConfigDict
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):
@@ -37,8 +38,10 @@ class HealthRecordResponse(HealthRecordCreate):
             return str(value)  # UUID を文字列に変換
         return value
 
-    class Config:
-        orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+    model_config = ConfigDict(from_attributes=True)  # ✅ 修正
+
+    # class Config:
+    #     orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
 
 class HealthRecordUpdate(BaseModel):
     date: Optional[date] = None
