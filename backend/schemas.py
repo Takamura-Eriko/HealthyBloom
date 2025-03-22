@@ -2,6 +2,7 @@ from pydantic import BaseModel, field_validator
 from datetime import datetime, date
 from typing import Dict, Optional
 from uuid import UUID
+from pydantic import BaseModel, validator, ConfigDict
 
 # ユーザー作成スキーマ
 class UserBase(BaseModel):
@@ -52,8 +53,10 @@ class HealthRecordResponse(HealthRecordCreate):
             return str(value)
         return value
 
-    class Config:
-        orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
+    model_config = ConfigDict(from_attributes=True)  # ✅ 修正
+
+    # class Config:
+    #     orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
 
 class HealthRecordUpdate(BaseModel):
     date: Optional[date] = None
