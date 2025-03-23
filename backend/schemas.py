@@ -145,3 +145,9 @@ class MealNutritionTagResponse(MealNutritionTagBase):
     id: UUID
 
     model_config = ConfigDict(from_attributes=True)
+
+# 🔧 Meal Plan 自動生成用の入力スキーマ
+class MealPlanGenerate(BaseModel):
+    user_id: UUID
+    start_date: date
+    end_date: date

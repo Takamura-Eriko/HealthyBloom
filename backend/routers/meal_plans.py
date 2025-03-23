@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 import crud, schemas, models
 from database import get_db
@@ -22,20 +22,34 @@ def get_meal_plan(user_id: UUID, db: Session = Depends(get_db)):
 
     meals = db.query(models.Meal).filter(models.Meal.user_id == user_id).all()
 
-    return {
-        "user_id": user_id,
-        "start_date": meal_plan.start_date,
-        "end_date": meal_plan.end_date,
-        "meals": meals
-    }
+    return schemas.MealPlanDetailResponse(
+        id=meal_plan.id,
+        user_id=user_id,
+        start_date=meal_plan.start_date,
+        end_date=meal_plan.end_date,
+        created_at=meal_plan.created_at,
+        meals=[
+            schemas.MealResponse(
+                id=meal.id,
+                user_id=meal.user_id,
+                date=meal.date,
+                meal_type=meal.meal_type,
+                recipe_id=meal.recipe_id,
+                created_at=meal.created_at
+            ) for meal in meals
+        ]
+    )
 
 # 健診データをもとに1週間の食事プランを生成
 @router.post("/generate", response_model=schemas.MealPlanResponse)
-def generate_meal_plan(user_id: UUID, db: Session = Depends(get_db)):
+def generate_meal_plan(
+    meal_request: schemas.MealPlanGenerate = Body(...),
+    db: Session = Depends(get_db)
+):
     """
     健診データに基づいて1週間の食事メニューを生成するAPI
     """
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+    user = db.query(models.User).filter(models.User.id == meal_request.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -44,25 +58,23 @@ def generate_meal_plan(user_id: UUID, db: Session = Depends(get_db)):
     if not recipes:
         raise HTTPException(status_code=404, detail="No recipes found")
 
-    start_date = date.today()
-    end_date = start_date + timedelta(days=6)
-
-    # 新しい MealPlan を作成
+    # MealPlan 作成
     meal_plan = models.MealPlan(
-        user_id=user_id,
-        start_date=start_date,
-        end_date=end_date
+        user_id=meal_request.user_id,
+        start_date=meal_request.start_date,
+        end_date=meal_request.end_date
     )
     db.add(meal_plan)
     db.commit()
     db.refresh(meal_plan)
 
     # 各日の食事をランダムに割り当て
-    for i in range(7):
+    days = (meal_request.end_date - meal_request.start_date).days + 1
+    for i in range(days):
         for meal_type in ["breakfast", "lunch", "dinner"]:
             meal = models.Meal(
-                user_id=user_id,
-                date=start_date + timedelta(days=i),
+                user_id=meal_request.user_id,
+                date=meal_request.start_date + timedelta(days=i),
                 meal_type=meal_type,
                 recipe_id=random.choice(recipes).id
             )
