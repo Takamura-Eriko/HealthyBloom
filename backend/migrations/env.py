@@ -2,7 +2,7 @@ import os
 from logging.config import fileConfig
 from sqlalchemy import create_engine, pool
 from alembic import context
-from database import Base
+from models import Base
 from dotenv import load_dotenv, find_dotenv
 
 # Alembic の設定オブジェクト
@@ -25,7 +25,7 @@ config.set_main_option("sqlalchemy.url", DATABASE_URL)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# `Base.metadata` を `target_metadata` に設定（マイグレーションの対象となるモデルを指定）
+# Base.metadata を target_metadata に設定（マイグレーションの対象となるモデルを指定）
 target_metadata = Base.metadata
 
 def run_migrations_offline():
