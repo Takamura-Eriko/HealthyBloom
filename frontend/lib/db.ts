@@ -10,28 +10,37 @@ import {
   where,
   orderBy,
   Timestamp,
+  getFirestore,
 } from "firebase/firestore"
-import { db } from "./firebase"
+import { firebaseApp } from "./firebase"
+
+// Firestoreの初期化
+const db = getFirestore(firebaseApp)
 
 // 健康データの型定義
 export interface HealthData {
   id?: string
   userId: string
   date: string
-  height?: number
-  weight?: number
-  bmi?: number
-  systolicBP?: number
-  diastolicBP?: number
-  pulse?: number
-  bloodSugar?: number
-  hdlCholesterol?: number
-  ldlCholesterol?: number
-  triglycerides?: number
-  uricAcid?: number
-  ast?: number
-  alt?: number
-  gammaGTP?: number
+  age?: number | null
+  gender?: string
+  height?: number | null
+  weight?: number | null
+  bmi?: number | null
+  systolicBP?: number | null
+  diastolicBP?: number | null
+  pulse?: number | null
+  bloodSugar?: number | null
+  hba1c?: number | null
+  totalCholesterol?: number | null
+  hdlCholesterol?: number | null
+  ldlCholesterol?: number | null
+  triglycerides?: number | null
+  uricAcid?: number | null
+  got?: number | null
+  gpt?: number | null
+  rGpt?: number | null
+  anomalies?: any
   createdAt?: Timestamp
   updatedAt?: Timestamp
 }
