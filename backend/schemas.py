@@ -1,6 +1,6 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from datetime import datetime, date
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from uuid import UUID
 from pydantic import BaseModel, validator, ConfigDict
 
@@ -16,15 +16,14 @@ class UserResponse(UserBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
+    model_config = ConfigDict(from_attributes=True)
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):
     user_id: UUID
     date: date
-    age: int  # 年齢
-    gender: str  # 性別
+    age: int
+    gender: str
     height: float
     weight: float
     bmi: float
@@ -41,19 +40,18 @@ class HealthRecordCreate(BaseModel):
     liver_r_gpt: float
     anomalies: Optional[Dict[str, str]] = None
 
-# 健診データのレスポンススキーマ
 class HealthRecordResponse(HealthRecordCreate):
     id: UUID
     user_id: UUID 
 
-    # UUID を str に変換する validator
     @field_validator('id', 'user_id', mode='before')
     def convert_uuid_to_str(cls, value):
         if isinstance(value, UUID):
             return str(value)
         return value
 
-    model_config = ConfigDict(from_attributes=True)  # ✅ 修正
+
+    model_config = ConfigDict(from_attributes=True) 
 
     # class Config:
     #     orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
@@ -93,14 +91,13 @@ class RecipeResponse(RecipeBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True  # ORM 互換
+    model_config = ConfigDict(from_attributes=True)
 
 # 食事記録スキーマ
 class MealBase(BaseModel):
     user_id: UUID
     date: date
-    meal_type: str  # breakfast, lunch, dinner
+    meal_type: str
     recipe_id: Optional[UUID] = None
 
 class MealCreate(MealBase):
@@ -110,8 +107,7 @@ class MealResponse(MealBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # 食事プランスキーマ
 class MealPlanBase(BaseModel):
@@ -126,8 +122,11 @@ class MealPlanResponse(MealPlanBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
+# 食事プラン詳細（食事記録付き）
+class MealPlanDetailResponse(MealPlanResponse):
+    meals: List[MealResponse]
 
 # 食事プランとレシピの中間テーブル
 class MealPlanRecipeBase(BaseModel):
@@ -150,5 +149,10 @@ class MealNutritionTagCreate(MealNutritionTagBase):
 class MealNutritionTagResponse(MealNutritionTagBase):
     id: UUID
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+# 🔧 Meal Plan 自動生成用の入力スキーマ
+class MealPlanGenerate(BaseModel):
+    user_id: UUID
+    start_date: date
+    end_date: date
