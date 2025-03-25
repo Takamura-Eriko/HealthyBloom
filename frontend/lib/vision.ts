@@ -42,27 +42,41 @@ export async function extractTextFromImage(imageUrl: string) {
 function extractHealthDataFromText(text: string) {
   // 正規表現パターン
   const patterns = {
-    height: /身長[：:]\s*(\d+\.?\d*)/,
-    weight: /体重[：:]\s*(\d+\.?\d*)/,
-    bmi: /BMI[：:]\s*(\d+\.?\d*)/,
-    systolicBP: /収縮期血圧[：:]\s*(\d+)/,
-    diastolicBP: /拡張期血圧[：:]\s*(\d+)/,
-    bloodSugar: /血糖値[：:]\s*(\d+)/,
-    hdlCholesterol: /HDL[：:]\s*(\d+)/,
-    ldlCholesterol: /LDL[：:]\s*(\d+)/,
-    triglycerides: /中性脂肪[：:]\s*(\d+)/,
-    uricAcid: /尿酸[：:]\s*(\d+\.?\d*)/,
-    ast: /AST[：:]\s*(\d+)/,
-    alt: /ALT[：:]\s*(\d+)/,
-    gammaGTP: /γ-?GTP[：:]\s*(\d+)/,
+    age: /年齢[:]\s*(\d+)/,
+    gender: /性別[:]\s*(男性|女性|その他)/,
+    height: /身長[:]\s*(\d+\.?\d*)/,
+    weight: /体重[:]\s*(\d+\.?\d*)/,
+    bmi: /BMI[:]\s*(\d+\.?\d*)/,
+    systolicBP: /収縮期血圧[:]\s*(\d+)/,
+    diastolicBP: /拡張期血圧[:]\s*(\d+)/,
+    bloodSugar: /血糖値[:]\s*(\d+)/,
+    hba1c: /HbA1c[:]\s*(\d+\.?\d*)/,
+    totalCholesterol: /総コレステロール[:]\s*(\d+)/,
+    hdlCholesterol: /HDL[:]\s*(\d+)/,
+    ldlCholesterol: /LDL[:]\s*(\d+)/,
+    triglycerides: /中性脂肪[:]\s*(\d+)/,
+    got: /GOT|AST[:]\s*(\d+)/,
+    gpt: /GPT|ALT[:]\s*(\d+)/,
+    rGpt: /γ-?GTP[:]\s*(\d+)/,
   }
 
-  const extractedData: Record<string, number | null> = {}
+  const extractedData: Record<string, number | string | null> = {}
 
   // 各項目を正規表現で抽出
   Object.entries(patterns).forEach(([key, pattern]) => {
     const match = text.match(pattern)
-    extractedData[key] = match ? Number.parseFloat(match[1]) : null
+    if (key === "gender" && match) {
+      extractedData[key] = match[1]
+      // 性別を英語に変換
+      const genderMap: Record<string, string> = {
+        男性: "male",
+        女性: "female",
+        その他: "other",
+      }
+      extractedData[key] = genderMap[match[1]] || match[1]
+    } else {
+      extractedData[key] = match ? Number.parseFloat(match[1]) : null
+    }
   })
 
   return extractedData
