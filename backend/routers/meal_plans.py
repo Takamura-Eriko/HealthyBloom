@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
+from typing import List
 import json
 import crud, schemas
 from models import HealthRecord
 from database import get_db
 import os
 from dotenv import load_dotenv
-from datetime import timedelta  # 追加
+from datetime import timedelta
 
 # OpenAI 1.x 対応
 from openai import OpenAI
@@ -16,6 +17,23 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 router = APIRouter(prefix="/meal_plans", tags=["Meal Plans"])
+
+
+# ▼ 曜日順整形のためのユーティリティ関数
+def sort_week_plan(plan_json: dict) -> dict:
+    """GPTが返す曜日順を正しい順（月→日）に整える"""
+    week_order = ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"]
+
+    if "week_plan" not in plan_json or not isinstance(plan_json["week_plan"], list):
+        return plan_json
+
+    sorted_plan = sorted(
+        plan_json["week_plan"],
+        key=lambda day: week_order.index(day.get("day", "月曜日")) if day.get("day") in week_order else 999
+    )
+
+    plan_json["week_plan"] = sorted_plan
+    return plan_json
 
 
 @router.post("/", response_model=schemas.MealPlanResponse)
@@ -29,6 +47,12 @@ def get_meal_plan(meal_plan_id: UUID, db: Session = Depends(get_db)):
     if meal_plan is None:
         raise HTTPException(status_code=404, detail="Meal plan not found")
     return meal_plan
+
+
+@router.get("/user/{user_id}", response_model=List[schemas.MealPlanResponse])
+def get_meal_plans_by_user(user_id: UUID, db: Session = Depends(get_db)):
+    meal_plans = crud.get_meal_plans_by_user(db, user_id)
+    return meal_plans
 
 
 @router.post("/generate/{user_id}", response_model=schemas.MealPlanResponse)
@@ -93,6 +117,8 @@ HDL: {record.cholesterol_hdl}
 
         try:
             plan_json = json.loads(content)
+            plan_json = sort_week_plan(plan_json)  # 曜日順整形をここで実行
+
         except json.JSONDecodeError as e:
             print("JSON解析エラー:", e)
             raise HTTPException(
@@ -104,6 +130,9 @@ HDL: {record.cholesterol_hdl}
         raise HTTPException(status_code=500, detail=f"GPT全体の処理中にエラーが発生しました: {str(e)}")
 
     end_date = record.date + timedelta(days=6)
+
+    # 同一週のMealPlanがあれば削除（重複防止）
+    crud.delete_meal_plan_in_same_week(db, user_id, record.date, end_date)
 
     meal_plan_create = schemas.MealPlanCreate(
         user_id=user_id,
