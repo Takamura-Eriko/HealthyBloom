@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware  
-from routers import health_records, meal_plans, meals, recipes ,users
+from routers import health_records, meal_plans, meals, recipes ,users ,auth
 
 from database import Base, engine
-from routers import auth_routes
 import sys
 import os
+
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -35,8 +36,7 @@ app.include_router(recipes.router)     #  Recipes
 app.include_router(users.router)
 
 # 認証が必要なエンドポイントを登録
-app.include_router(auth_routes.router)
-
+app.include_router(auth.router)
 
 @app.get("/")
 def read_root():

@@ -17,7 +17,8 @@ class UserResponse(UserBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
+        from_attributes = True  # ✅ 変更
+        # orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):

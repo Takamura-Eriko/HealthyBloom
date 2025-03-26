@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.local
 *.log
 
 # Frontend 用の無視ファイル
@@ -21,3 +22,6 @@ docker-compose.yaml
 # Package 管理関連（npm / yarn）
 package-lock.json
 package.json
+
+# Firebase 認証キー（これを公開するとセキュリティリスク）
+firebase_credentials.json
