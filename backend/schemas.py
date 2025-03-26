@@ -16,7 +16,10 @@ class UserResponse(UserBase):
     id: UUID
     created_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        from_attributes = True  # ✅ 変更
+        # orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
+
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):

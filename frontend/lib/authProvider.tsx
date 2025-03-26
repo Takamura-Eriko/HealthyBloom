@@ -44,12 +44,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return newUser;
   };
 
-  // メール & パスワードでログイン
-  const signIn = async (email: string, password: string): Promise<User> => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    setUser(userCredential.user);
-    return userCredential.user;
-  };
+  
+// メール & パスワードでログイン + Firebase IDトークンをバックエンドへ送信
+const signIn = async (email: string, password: string): Promise<User> => {
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const loggedInUser = userCredential.user;
+  setUser(loggedInUser);
+
+  // Firebase IDトークンを取得
+  const token = await loggedInUser.getIdToken();
+  console.log("Token:", token); // デバッグ用
+
+  
+  // バックエンドへトークンを送信
+  const response = await fetch("http://localhost:8000/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Authentication failed");
+  }
+
+  const data = await response.json();
+  console.log("Login response:", data); // デバッグ用
+  return loggedInUser;
+};
+
 
   // Google でログイン
   const googleSignIn = async (): Promise<User> => {
@@ -83,76 +107,3 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-
-// "use client";
-
-// import { AuthContext } from "./auth";
-// import { ReactNode, useState, useEffect } from "react";
-// import { 
-//   getAuth, 
-//   createUserWithEmailAndPassword, 
-//   signInWithEmailAndPassword, 
-//   signOut, 
-//   sendPasswordResetEmail, 
-//   onAuthStateChanged,
-//   updateProfile
-// } from "firebase/auth";
-// import type { User } from "firebase/auth";
-
-// interface AuthProviderProps {
-//   children: ReactNode;
-// }
-
-// export function AuthProvider({ children }: AuthProviderProps) {
-//   const auth = getAuth();
-//   const [user, setUser] = useState<User | null>(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-//       setUser(currentUser);
-//       setLoading(false);
-//     });
-
-//     return () => unsubscribe();
-//   }, [auth]);
-
-//   const signUp = async (email: string, password: string, displayName: string) => {
-//     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-//     const newUser = userCredential.user;
-//     await updateProfile(newUser, { displayName });
-//     setUser(newUser);
-//     return newUser;
-//   };
-
-//   const signIn = async (email: string, password: string) => {
-//     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-//     setUser(userCredential.user);
-//     return userCredential.user;
-//   };
-
-//   const logOut = async () => {
-//     await signOut(auth);
-//     setUser(null);
-//   };
-
-//   const resetPassword = async (email: string) => {
-//     await sendPasswordResetEmail(auth, email);
-//   };
-
-//   const value = {
-//     user,
-//     loading,
-//     signUp,
-//     signIn,
-//     signOut: logOut,
-//     resetPassword,
-//   };
-
-//   return (
-//     // eslint-disable-next-line react/react-in-jsx-scope
-//     <AuthContext.Provider value={value}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// }
