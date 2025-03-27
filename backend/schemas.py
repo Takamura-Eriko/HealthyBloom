@@ -10,16 +10,18 @@ class UserBase(BaseModel):
     name: str
 
 class UserCreate(UserBase):
-    password: str  # パスワードは作成時のみ必要
+    password: str
 
 class UserResponse(UserBase):
     id: UUID
     created_at: datetime
 
     class Config:
-        from_attributes = True  # ✅ 変更
-        # orm_mode = True  # SQLAlchemy モデルとの互換性を保つ
 
+       
+
+    from_attributes = True  
+        
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):
@@ -45,7 +47,7 @@ class HealthRecordCreate(BaseModel):
 
 class HealthRecordResponse(HealthRecordCreate):
     id: UUID
-    user_id: UUID 
+    user_id: UUID
 
     @field_validator('id', 'user_id', mode='before')
     def convert_uuid_to_str(cls, value):
@@ -54,10 +56,8 @@ class HealthRecordResponse(HealthRecordCreate):
         return value
 
 
-    model_config = ConfigDict(from_attributes=True) 
+    model_config = ConfigDict(from_attributes=True)
 
-    # class Config:
-    #     orm_mode = True  # ORM モードを有効にして SQLAlchemy モデルからの変換を有効にする
 
 class HealthRecordUpdate(BaseModel):
     date: Optional[date] = None
@@ -94,6 +94,7 @@ class RecipeResponse(RecipeBase):
     id: UUID
     created_at: datetime
 
+
     model_config = ConfigDict(from_attributes=True)
 
 # 食事記録スキーマ
@@ -112,11 +113,12 @@ class MealResponse(MealBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-# 食事プランスキーマ
+# 食事プランスキーマ（plan_json 対応）
 class MealPlanBase(BaseModel):
     user_id: UUID
     start_date: date
     end_date: date
+    plan_json: Optional[Dict] = None  # GPTが生成するJSONを保存
 
 class MealPlanCreate(MealPlanBase):
     pass
