@@ -3,6 +3,10 @@ from sqlalchemy.orm import Session
 import crud, schemas
 from database import get_db
 from uuid import UUID
+from fastapi import FastAPI
+from routers import auth
+
+app = FastAPI()
 
 router = APIRouter(prefix="/meals", tags=["Meals"])
 
@@ -16,3 +20,5 @@ def get_meal(meal_id: UUID, db: Session = Depends(get_db)):
     if meal is None:
         raise HTTPException(status_code=404, detail="Meal not found")
     return meal
+
+app.include_router(auth.router)
