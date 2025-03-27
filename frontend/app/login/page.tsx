@@ -26,7 +26,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { signIn } = useAuth()
-
+  console.log("#######LoginPage#######")
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,6 +39,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
+      console.log("##############")
       await signIn(data.email, data.password)
       toast({
         title: "ログイン成功",

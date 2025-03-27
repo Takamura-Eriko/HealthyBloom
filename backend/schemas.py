@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from datetime import datetime, date
 from typing import Dict, Optional, List
 from uuid import UUID
@@ -17,7 +17,11 @@ class UserResponse(UserBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+
+       
+
+    from_attributes = True  
+        
 
 # 健診データのリクエストスキーマ
 class HealthRecordCreate(BaseModel):
@@ -51,7 +55,9 @@ class HealthRecordResponse(HealthRecordCreate):
             return str(value)
         return value
 
+
     model_config = ConfigDict(from_attributes=True)
+
 
 class HealthRecordUpdate(BaseModel):
     date: Optional[date] = None
@@ -88,8 +94,8 @@ class RecipeResponse(RecipeBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+
+    model_config = ConfigDict(from_attributes=True)
 
 # 食事記録スキーマ
 class MealBase(BaseModel):
@@ -105,8 +111,7 @@ class MealResponse(MealBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # 食事プランスキーマ（plan_json 対応）
 class MealPlanBase(BaseModel):
@@ -122,8 +127,11 @@ class MealPlanResponse(MealPlanBase):
     id: UUID
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
+# 食事プラン詳細（食事記録付き）
+class MealPlanDetailResponse(MealPlanResponse):
+    meals: List[MealResponse]
 
 # 食事プランとレシピの中間テーブル
 class MealPlanRecipeBase(BaseModel):
@@ -146,5 +154,10 @@ class MealNutritionTagCreate(MealNutritionTagBase):
 class MealNutritionTagResponse(MealNutritionTagBase):
     id: UUID
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+# 🔧 Meal Plan 自動生成用の入力スキーマ
+class MealPlanGenerate(BaseModel):
+    user_id: UUID
+    start_date: date
+    end_date: date
