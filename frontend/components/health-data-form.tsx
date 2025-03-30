@@ -57,6 +57,8 @@ const normalRanges = {
 }
 
 export default function HealthDataForm() {
+  
+  console.log("#HealthDataForm#")
   const [abnormalValues, setAbnormalValues] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { user } = useAuth()
