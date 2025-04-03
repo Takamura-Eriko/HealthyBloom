@@ -19,8 +19,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 // `useAuth` フックの定義
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
-  console.log("##useAuth##")
-  if (!context) {
+    if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

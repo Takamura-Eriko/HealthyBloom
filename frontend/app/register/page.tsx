@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { useAuth } from "@/lib/auth"
+import React from "react"
 
 const registerSchema = z
   .object({
@@ -55,7 +56,7 @@ export default function RegisterPage() {
         title: "登録成功",
         description: "アカウントが正常に作成されました",
       })
-      router.push("/")
+      // router.push("/")
     } catch (error: any) {
       console.error("登録エラー:", error)
 
