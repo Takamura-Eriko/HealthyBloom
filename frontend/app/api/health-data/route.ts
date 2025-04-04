@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       const healthData = await getHealthDataById(id)
 
       // データが存在しない、または他のユーザーのデータにアクセスしようとしている場合
-      if (!healthData || healthData.userId !== userId) {
+      if (!healthData || healthData.user_id !== userId) {
         return NextResponse.json({ error: "データが見つかりません" }, { status: 404 })
       }
 
@@ -93,7 +93,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "データが見つかりません" }, { status: 404 })
     }
 
-    if (healthData.userId !== userId) {
+    if (healthData.user_id !== userId) {
       return NextResponse.json({ error: "このデータを削除する権限がありません" }, { status: 403 })
     }
 
