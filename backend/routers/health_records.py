@@ -7,12 +7,12 @@ from crud import create_health_record, get_health_records
 router = APIRouter()
 
 # 健診データの新規登録
-@router.post("/health_records", response_model=HealthRecordResponse)
+@router.post("/health-records", response_model=HealthRecordResponse)
 def create_record(record: HealthRecordCreate, db: Session = Depends(get_db)):
     return create_health_record(db, record)
 
 # 健診データの取得
-@router.get("/health_records/{user_id}", response_model=list[HealthRecordResponse])
+@router.get("/health-records/{user_id}", response_model=list[HealthRecordResponse])
 def read_records(user_id: str, db: Session = Depends(get_db)):
     records = get_health_records(db, user_id)
     if not records:
@@ -32,6 +32,7 @@ def update_health_record(id: str, record_update: HealthRecordUpdate, db: Session
     db.commit()
     db.refresh(db_record)
     return db_record
+
 
 # 健康診断データの削除
 @router.delete("/health-records/{id}", response_model=dict)
