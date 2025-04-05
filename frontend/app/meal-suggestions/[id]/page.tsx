@@ -31,10 +31,12 @@ const nutritionTypeColors: Record<string, string> = {
 
 export default function MealDetailPage({ params }: { params: { id: string } }) {
   const [recipe, setRecipe] = useState<Recipe | null>(null)
+  const [weeklyMenu, setWeeklyMenu] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFavorite, setIsFavorite] = useState(false)
   const { toast } = useToast()
+
 
   // レシピを取得する関数
   const fetchRecipe = async (id: string) => {
@@ -88,12 +90,79 @@ export default function MealDetailPage({ params }: { params: { id: string } }) {
     window.print()
   }
 
-  // 初回レンダリング時にレシピを取得
   useEffect(() => {
-    if (params.id) {
-      fetchRecipe(params.id)
+    const fetchMenu = async () => {
+      try {
+        const res1 = await fetch(`/api/health/recommendation/${params.id}`)
+        if (!res1.ok) throw new Error("栄養タイプの取得に失敗しました")
+        const nutritionTypes: string[] = await res1.json()
+
+        const res2 = await fetch(
+          `/api/recipes/weekly-menu?nutrition_types=${nutritionTypes.join(",")}`
+        )
+        if (!res2.ok) throw new Error("週間メニューの取得に失敗しました")
+        const menu = await res2.json()
+
+        setWeeklyMenu(menu)
+      } catch (err: any) {
+        console.error(err)
+        setError(err.message)
+        toast({
+          title: "取得エラー",
+          description: err.message,
+          variant: "destructive",
+        })
+      } finally {
+        setLoading(false)
+      }
     }
+
+  // 初回レンダリング時にレシピを取得
+  fetchMenu()
+    fetchRecipe(params.id)
   }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <Skeleton className="h-10 w-20 mb-4" />
+        <div className="grid gap-6 md:grid-cols-3">
+          <Skeleton className="h-64 w-full md:col-span-2" />
+          <div className="space-y-4">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <Button variant="ghost" size="sm" className="rounded-full text-primary mb-4" asChild>
+          <Link href="/meal-suggestions">
+            <ArrowLeft className="mr-2 h-4 w-4" /> 戻る
+          </Link>
+        </Button>
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">{error}</div>
+      </div>
+    )
+  }
+
+  if (!recipe) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <Button variant="ghost" size="sm" className="rounded-full text-primary mb-4" asChild>
+          <Link href="/meal-suggestions">
+            <ArrowLeft className="mr-2 h-4 w-4" /> 戻る
+          </Link>
+        </Button>
+        <p className="text-center text-muted-foreground py-10">レシピが見つかりませんでした。</p>
+      </div>
+    )
+  }
+
 
   // ローディングスケルトン
   if (loading) {
@@ -180,6 +249,7 @@ export default function MealDetailPage({ params }: { params: { id: string } }) {
     )
   }
 
+
   return (
     <div className="container mx-auto px-4 py-6 relative">
       {/* 装飾的な花のイラスト - 左上 */}
@@ -227,6 +297,29 @@ export default function MealDetailPage({ params }: { params: { id: string } }) {
                   </span>
                 )}
               </div>
+
+              {/* 週間提案メニュー表示 */}
+              {weeklyMenu && (
+                <div className="mt-6 mb-6">
+                  <h2 className="text-xl font-bold mb-4">このレシピに基づいた1週間の提案メニュー</h2>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {weeklyMenu.map((day, index) => (
+                <div
+                  key={index}
+                  className="bg-pastel-lavender/30 p-4 rounded-xl shadow border border-pastel-lavender"
+                >
+                  <h3 className="text-md font-semibold mb-2">{day.day}</h3>
+                  <ul className="space-y-1 text-sm">
+                    <li>朝食: {day.breakfast.title}</li>
+                    <li>昼食: {day.lunch.title}</li>
+                    <li>夕食: {day.dinner.title}</li>
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
               <div className="flex items-center mb-2">
                 <Flower className="h-5 w-5 text-primary mr-2" fill="#FFD1DC" />
                 <h1 className="text-2xl font-bold handwritten-heading">{recipe.title}</h1>
@@ -491,4 +584,5 @@ export default function MealDetailPage({ params }: { params: { id: string } }) {
     </div>
   )
 }
+
 
