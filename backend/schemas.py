@@ -17,10 +17,7 @@ class UserResponse(UserBase):
     created_at: datetime
 
     class Config:
-
-       
-
-    from_attributes = True  
+        from_attributes = True  
         
 
 # 健診データのリクエストスキーマ
