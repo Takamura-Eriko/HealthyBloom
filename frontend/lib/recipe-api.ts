@@ -1,7 +1,8 @@
 import { apiClient, getApiKey } from "./api-client"
 
 // レシピAPIのベースURL
-const RECIPE_API_BASE_URL = "https://api.example.com/recipes"
+const RECIPE_API_BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/recipes`;
+
 
 // レシピの栄養素情報の型
 export interface NutritionInfo {

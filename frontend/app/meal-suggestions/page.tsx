@@ -199,6 +199,7 @@ export default function MealSuggestionsPage() {
 
   // 週間メニューを取得する関数
   const fetchWeeklyMenu = async () => {
+    setLoading(true)
     try {
       const response = await fetch("/api/recipes?weekly=true")
       if (!response.ok) {
@@ -206,10 +207,13 @@ export default function MealSuggestionsPage() {
       }
 
       const data = await response.json()
+      console.log(data)
       setWeeklyMenu(data)
     } catch (err) {
       console.error("Error fetching weekly menu:", err)
       setError("週間メニューの取得に失敗しました。もう一度お試しください。")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -219,14 +223,15 @@ export default function MealSuggestionsPage() {
     if (value === "weekly") {
       fetchWeeklyMenu()
     } else {
-      fetchRecipes(value)
+      // fetchRecipes(value)
     }
   }
 
-  // 初回レンダリング時にレシピを取得
-  useEffect(() => {
-    fetchRecipes()
-  }, [])
+  // 初回レンダリング時に週間メニューを取得
+useEffect(() => {
+  fetchWeeklyMenu()
+}, [])
+
 
   return (
     <div className="flex flex-col gap-6 relative">
