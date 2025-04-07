@@ -56,7 +56,8 @@ export default function RegisterPage() {
         title: "登録成功",
         description: "アカウントが正常に作成されました",
       })
-      // router.push("/")
+      router.push("/")
+      
     } catch (error: any) {
       console.error("登録エラー:", error)
 

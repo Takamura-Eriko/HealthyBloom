@@ -13,6 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useAuth } from "@/lib/auth"
 import { saveHealthData } from "@/lib/db"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useRouter } from "next/navigation"
 
 // TODO 項目名を修正する
 const healthDataSchema = z.object({
@@ -43,23 +44,25 @@ const healthDataSchema = z.object({
 
 // 正常値の範囲
 const normalRanges = {
-  bmi: { min: 18.5, max: 25 },
-  blood_pressure_systolic: { min: 90, max: 120 },
+  bmi: { min: 13, max: 60 },
+  blood_pressure_systolic: { min: 90, max: 200},
   blood_pressure_diastolic: { min: 60, max: 80 },
-  blood_sugar: { min: 70, max: 100 },
-  hba1c: { min: 4.6, max: 6.2 },
-  cholesterol_total: { min: 130, max: 220 },
-  cholesterol_hdl: { min: 40, max: 60 },
-  cholesterol_ldl: { min: 0, max: 100 },
-  triglycerides: { min: 0, max: 150 },
-  liver_got: { min: 10, max: 40 },
-  liver_gpt: { min: 7, max: 56 },
-  liver_r_gpt: { min: 0, max: 73 },
+  blood_sugar: { min: 60, max: 150 },
+  hba1c: { min: 4.6, max: 8.0 },
+  cholesterol_total: { min: 130, max: 273 },
+  cholesterol_hdl: { min: 0, max: 70 },
+  cholesterol_ldl: { min: 0, max: 190 },
+  triglycerides: { min: 0, max: 240 },
+  liver_got: { min: 10, max: 100 },
+  liver_gpt: { min: 7, max: 100 },
+  liver_r_gpt: { min: 0, max: 150 },
 }
 
 export default function HealthDataForm() {
 
   console.log("#HealthDataForm#")
+  const router = useRouter() // ← ここで定義する！
+
   const [abnormalValues, setAbnormalValues] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { user } = useAuth()
@@ -168,8 +171,7 @@ export default function HealthDataForm() {
 
       await saveHealthData(healthData)
 
-
-
+    
       if (abnormal.length > 0) {
         toast({
           title: "健康データを保存しました",
@@ -182,6 +184,8 @@ export default function HealthDataForm() {
           description: "すべての値は正常範囲内です。",
         })
       }
+      router.push("/")
+
     } catch (error) {
       console.error("データ保存エラー:", error)
       toast({
