@@ -113,7 +113,7 @@ export async function getWeeklyMenu(): Promise<any> {
   try {
     const apiKey = getApiKey("recipe")
 
-    const response = await apiClient<any>(`${RECIPE_API_BASE_URL}/weekly-menu`, {
+    const response = await apiClient<any>(`${RECIPE_API_BASE_URL}/weekly-menu2`, {
       apiKey,
     })
 

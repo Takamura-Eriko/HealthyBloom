@@ -140,15 +140,33 @@ def generate_meal_plan(user_id: UUID, db: Session = Depends(get_db)):
   "week_plan": [
     {{
       "day": "月曜日",
-      "meals": [
-        {{
-          "type": "朝食",
-          "title": "納豆ご飯と味噌汁",
-          "tags": ["高タンパク", "発酵食品"],
-          "time": "約10分",
-          "category": "時短"
+      "breakfast": {{
+            "title": "全粒粉トーストとヨーグルト",
+            "nutritionType": [
+                "high-fiber",
+                "high-protein"
+            ],
+            "cookingTime": 5,
+            "isQuick": true
+        }},
+        "lunch": {{
+            "title": "時短！高タンパク豆腐丼",
+            "nutritionType": [
+                "high-protein",
+                "low-fat"
+            ],
+            "cookingTime": 10,
+            "isQuick": true
+        }},
+        "dinner": {{
+            "title": "減塩でも美味しい和風煮物",
+            "nutritionType": [
+                "low-salt",
+                "high-fiber"
+            ],
+            "cookingTime": 40,
+            "isQuick": false
         }}
-      ]
     }}
   ]
 }}
