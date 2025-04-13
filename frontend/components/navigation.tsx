@@ -170,26 +170,7 @@ export default function Navigation() {
           )}
         </div>
       </div>
-      isMenuOpen && (
-      <div className="md:hidden">
-        <nav className="grid grid-cols-1 gap-2 p-4 border-t">
-          {routes.map((route) => (
-            <Link
-              key={route.href}
-              href={route.href}
-              className={cn(
-                "flex items-center px-3 py-2 rounded-md transition-colors hover:text-primary",
-                route.active ? "bg-muted text-primary" : "text-foreground/60",
-              )}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {route.icon}
-              {route.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-      )
+      
     </header>
   )
 }
