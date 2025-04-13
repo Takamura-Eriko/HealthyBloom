@@ -131,24 +131,54 @@ def generate_meal_plan(user_id: UUID, db: Session = Depends(get_db)):
 
     if not record:
         raise HTTPException(status_code=404, detail="健康診断データが見つかりません")
+    
+
+    start_date = record.date
+    end_date = start_date + timedelta(days=6)
+
+    crud.delete_meal_plan_in_same_week(db, user_id, record.date, end_date)
+
+
 
     prompt = f"""
-あなたは栄養士です。以下の健康診断データに基づき、1週間分の食事メニュー（朝・昼・夕）を構造化JSON形式で提案してください。
+あなたは日本語で返答する管理栄養士です。以下の健康診断データに基づき、1週間分の食事メニュー（朝・昼・夕）を構造化JSON形式で提案してください。
+栄養分類名も日本語で記載してください。
+
+必ずJSON形式のみで返してください。説明・補足・コメント・空行は禁止です。
+出力は必ず次のような形式でお願いします：
 
 出力形式の例：
 {{
   "week_plan": [
     {{
       "day": "月曜日",
-      "meals": [
-        {{
-          "type": "朝食",
-          "title": "納豆ご飯と味噌汁",
-          "tags": ["高タンパク", "発酵食品"],
-          "time": "約10分",
-          "category": "時短"
+      "breakfast": {{
+            "title": "全粒粉トーストとヨーグルト",
+            "nutritionType": [
+                "high-fiber",
+                "high-protein"
+            ],
+            "cookingTime": 5,
+            "isQuick": true
+        }},
+        "lunch": {{
+            "title": "時短！高タンパク豆腐丼",
+            "nutritionType": [
+                "high-protein",
+                "low-fat"
+            ],
+            "cookingTime": 10,
+            "isQuick": true
+        }},
+        "dinner": {{
+            "title": "減塩でも美味しい和風煮物",
+            "nutritionType": [
+                "low-salt",
+                "high-fiber"
+            ],
+            "cookingTime": 40,
+            "isQuick": false
         }}
-      ]
     }}
   ]
 }}
@@ -172,13 +202,17 @@ HDL: {record.cholesterol_hdl}
         response = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "あなたは管理栄養士です。JSON形式のみで返してください。"},
+                {"role": "system", "content": "あなたは管理栄養士です。出力はJSONオブジェクトのみで返してください。コメント、補足、空行は禁止です。"},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7
         )
         content = response.choices[0].message.content
         print("GPTの出力:\n", content)
+
+        with open("gpt_output_debug.json", "w", encoding="utf-8") as f:
+            f.write(content)
+
 
         try:
             plan_json = json.loads(content)
@@ -206,3 +240,4 @@ HDL: {record.cholesterol_hdl}
         plan_json=plan_json
     )
     return crud.create_meal_plan(db, meal_plan_create)
+

@@ -2,11 +2,14 @@ from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware  
 from routers import health_records, meal_plans, meals, recipes ,users ,auth
+from routers import health_analysis  # ← ここを追加
 
 from database import Base, engine
 import sys
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -34,6 +37,7 @@ app.include_router(meal_plans.router)  #  Meal Plans
 app.include_router(meals.router)       #  Meals
 app.include_router(recipes.router)     #  Recipes
 app.include_router(users.router)
+app.include_router(health_analysis.router)
 
 # 認証が必要なエンドポイントを登録
 app.include_router(auth.router)

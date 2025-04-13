@@ -44,3 +44,22 @@ def delete_health_record(id: str, db: Session = Depends(get_db)):
     db.delete(db_record)
     db.commit()
     return {"message": "Record deleted successfully"}
+
+from fastapi.encoders import jsonable_encoder
+from utils.health_analysis import analyze_health_data  # ← 追記
+
+# 栄養タイプ判定エンドポイント
+@router.get("/health/recommendation/{user_id}", response_model=list[str])
+def get_nutrition_recommendation(user_id: str, db: Session = Depends(get_db)):
+    records = get_health_records(db, user_id)
+    if not records:
+        raise HTTPException(status_code=404, detail="健診データが見つかりません")
+
+    # 最新データを抽出
+    latest = sorted(records, key=lambda x: x.date, reverse=True)[0]
+    latest_dict = jsonable_encoder(latest)
+
+    # 栄養タイプを判定
+    nutrition_types = analyze_health_data(latest_dict)
+
+    return nutrition_types

@@ -199,16 +199,36 @@ export default function MealSuggestionsPage() {
 
   // 週間メニューを取得する関数
   const fetchWeeklyMenu = async () => {
-    setLoading(true)
     try {
-      const response = await fetch("/api/recipes?weekly=true")
+      setLoading(true)
+
+      const userId = "b74ca31d-c7f7-4029-b5ca-197aa6adb0d8"
+      console.log("fetch開始: userId =", userId)
+  
+      const response = await fetch(`http://localhost:8000/recipes/weekly-menu2/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      
+  
+      console.log("レスポンスステータス:", response.status)
+      console.log("レスポンスURL:", response.url)
+  
       if (!response.ok) {
         throw new Error("Failed to fetch weekly menu")
       }
-
+  
       const data = await response.json()
-      console.log(data)
-      setWeeklyMenu(data)
+      console.log("取得した週間メニュー:", data)
+  
+      const weekPlan = data?.plan_json?.week_plan
+      if (!Array.isArray(weekPlan)) {
+        throw new Error("APIレスポンスに正しい 'week_plan' が含まれていません。")
+      }
+  
+      setWeeklyMenu(weekPlan)
     } catch (err) {
       console.error("Error fetching weekly menu:", err)
       setError("週間メニューの取得に失敗しました。もう一度お試しください。")
@@ -216,6 +236,7 @@ export default function MealSuggestionsPage() {
       setLoading(false)
     }
   }
+  
 
   // タブが変更されたときの処理
   const handleTabChange = (value: string) => {
@@ -223,15 +244,15 @@ export default function MealSuggestionsPage() {
     if (value === "weekly") {
       fetchWeeklyMenu()
     } else {
-      // fetchRecipes(value)
+      fetchRecipes(value)
     }
   }
 
-  // 初回レンダリング時に週間メニューを取得
-useEffect(() => {
-  fetchWeeklyMenu()
-}, [])
-
+  // 初回レンダリング時にレシピを取得
+  useEffect(() => {
+    fetchRecipes()
+    fetchWeeklyMenu()
+  }, [])
 
   return (
     <div className="flex flex-col gap-6 relative">
@@ -262,11 +283,16 @@ useEffect(() => {
           <TabsTrigger value="weekly" className="cute-tabs-trigger">
             1週間プラン
           </TabsTrigger>
-      </TabsList>
+　　　　　</TabsList>
 
         {/* 1週間プラン */}
+        
         <TabsContent value="weekly" className="mt-4">
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
           <div className="cute-card bg-white p-6 relative overflow-hidden">
             <div className="cute-pattern-bg absolute inset-0"></div>
             <div className="relative">
@@ -276,27 +302,33 @@ useEffect(() => {
                   <h2 className="text-2xl font-bold text-primary handwritten-heading">1週間の食事プラン</h2>
                   <Flower className="h-5 w-5 text-primary ml-2" fill="#FFD1DC" />
                 </div>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-muted-foreground text-center px-4">
                   あなたの健康状態に合わせた1週間分の食事プランです。バランスの良い食事を心がけましょう♪
                 </p>
+
               </div>
-              
+
               {loading ? (
-                // ローディング中はスケルトンを表示
-                <div className="space-y-4">
-                  {Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className="border-2 border-pastel-pink rounded-2xl p-4 bg-white">
-                      <Skeleton className="h-8 w-32 mb-4" />
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <Skeleton className="h-32 rounded-xl" />
-                        <Skeleton className="h-32 rounded-xl" />
-                        <Skeleton className="h-32 rounded-xl" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <>
+                 {/* ローディング中のテキスト */}
+                 <p className="text-center text-base font-semibold text-black mb-4">読み込み中...</p>
+
+                 {/* ローディング中はスケルトンを表示 */}
+                 <div className="space-y-4">
+                   {Array.from({ length: 3 }).map((_, index) => (
+                     <div key={index} className="border-2 border-pastel-pink rounded-2xl p-4 bg-white">
+                       <Skeleton className="h-8 w-32 mb-4" />
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                         <Skeleton className="h-32 rounded-xl" />
+                         <Skeleton className="h-32 rounded-xl" />
+                         <Skeleton className="h-32 rounded-xl" />
+                       </div>
+                     </div>
+                     ))}
+                 </div>
+               </>
               ) : weeklyMenu.length > 0 ? (
-                // 週間メニューがある場合は表示
+                // 週間メニューがある場合
                 <div className="grid gap-6">
                   {weeklyMenu.map((day) => (
                     <div key={day.day} className="border-2 border-pastel-pink rounded-2xl p-4 bg-white">
@@ -310,15 +342,14 @@ useEffect(() => {
                         <WeeklyMealCard meal={day.dinner} mealType="夕食" />
                       </div>
                     </div>
-                  ))}
+                    ))}
                 </div>
               ) : (
-                // 週間メニューがない場合はメッセージを表示
                 <div className="text-center py-10">
                   <p className="text-muted-foreground">週間メニューが見つかりませんでした。</p>
                 </div>
               )}
-              
+
               <div className="mt-6 text-center">
                 <Button className="rounded-full bg-pastel-pink hover:bg-primary text-primary-foreground px-6">
                   <Flower className="mr-2 h-4 w-4" fill="#FFF" />
@@ -328,6 +359,7 @@ useEffect(() => {
             </div>
           </div>
         </TabsContent>
+
       </Tabs>
     </div>
   );
