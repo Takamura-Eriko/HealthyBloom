@@ -257,46 +257,12 @@ useEffect(() => {
         <div className="cute-divider w-32 mx-auto mt-4"></div>
       </div>
 
-      <Tabs defaultValue="all" className="w-full" onValueChange={handleTabChange}>
+      <Tabs defaultValue="weekly" className="w-full" onValueChange={handleTabChange}>
         <TabsList className="bg-pastel-lavender/30 p-1 rounded-full mb-6">
-          <TabsTrigger value="all" className="cute-tabs-trigger">
-            すべて
-          </TabsTrigger>
           <TabsTrigger value="weekly" className="cute-tabs-trigger">
             1週間プラン
           </TabsTrigger>
-          <TabsTrigger value="quick" className="cute-tabs-trigger">
-            時短レシピ
-          </TabsTrigger>
-          <TabsTrigger value="low-salt" className="cute-tabs-trigger">
-            減塩
-          </TabsTrigger>
-          <TabsTrigger value="low-sugar" className="cute-tabs-trigger">
-            低糖質
-          </TabsTrigger>
-          <TabsTrigger value="high-protein" className="cute-tabs-trigger">
-            高タンパク
-          </TabsTrigger>
-        </TabsList>
-
-        {/* すべてのレシピ */}
-        <TabsContent value="all" className="mt-4">
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading ? (
-              // ローディング中はスケルトンを表示
-              Array.from({ length: 6 }).map((_, index) => <MealCardSkeleton key={index} />)
-            ) : recipes.length > 0 ? (
-              // レシピがある場合は表示
-              recipes.map((recipe) => <MealCard key={recipe.id} meal={recipe} />)
-            ) : (
-              // レシピがない場合はメッセージを表示
-              <div className="col-span-full text-center py-10">
-                <p className="text-muted-foreground">レシピが見つかりませんでした。</p>
-              </div>
-            )}
-          </div>
-        </TabsContent>
+      </TabsList>
 
         {/* 1週間プラン */}
         <TabsContent value="weekly" className="mt-4">
@@ -314,6 +280,7 @@ useEffect(() => {
                   あなたの健康状態に合わせた1週間分の食事プランです。バランスの良い食事を心がけましょう♪
                 </p>
               </div>
+              
               {loading ? (
                 // ローディング中はスケルトンを表示
                 <div className="space-y-4">
@@ -351,6 +318,7 @@ useEffect(() => {
                   <p className="text-muted-foreground">週間メニューが見つかりませんでした。</p>
                 </div>
               )}
+              
               <div className="mt-6 text-center">
                 <Button className="rounded-full bg-pastel-pink hover:bg-primary text-primary-foreground px-6">
                   <Flower className="mr-2 h-4 w-4" fill="#FFF" />
@@ -360,94 +328,7 @@ useEffect(() => {
             </div>
           </div>
         </TabsContent>
-
-        {/* 時短レシピ */}
-        <TabsContent value="quick" className="mt-4">
-          <div className="cute-card bg-white p-6 mb-6 text-center">
-            <div className="flex items-center justify-center mb-2">
-              <Flower className="h-5 w-5 text-primary mr-2" fill="#FFD1DC" />
-              <h2 className="text-xl font-bold text-primary handwritten-heading">時短レシピ</h2>
-              <Flower className="h-5 w-5 text-primary ml-2" fill="#FFD1DC" />
-            </div>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              忙しい日でも簡単に作れる、調理時間15分以内のレシピを集めました。健康的な食事を時短で♪
-            </p>
-          </div>
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading ? (
-              // ローディング中はスケルトンを表示
-              Array.from({ length: 3 }).map((_, index) => <MealCardSkeleton key={index} />)
-            ) : recipes.length > 0 ? (
-              // レシピがある場合は表示
-              recipes.map((recipe) => <MealCard key={recipe.id} meal={recipe} />)
-            ) : (
-              // レシピがない場合はメッセージを表示
-              <div className="col-span-full text-center py-10">
-                <p className="text-muted-foreground">時短レシピが見つかりませんでした。</p>
-              </div>
-            )}
-          </div>
-        </TabsContent>
-
-        {/* 減塩レシピ */}
-        <TabsContent value="low-salt" className="mt-4">
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading ? (
-              // ローディング中はスケルトンを表示
-              Array.from({ length: 3 }).map((_, index) => <MealCardSkeleton key={index} />)
-            ) : recipes.length > 0 ? (
-              // レシピがある場合は表示
-              recipes.map((recipe) => <MealCard key={recipe.id} meal={recipe} />)
-            ) : (
-              // レシピがない場合はメッセージを表示
-              <div className="col-span-full text-center py-10">
-                <p className="text-muted-foreground">減塩レシピが見つかりませんでした。</p>
-              </div>
-            )}
-          </div>
-        </TabsContent>
-
-        {/* 低糖質レシピ */}
-        <TabsContent value="low-sugar" className="mt-4">
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading ? (
-              // ローディング中はスケルトンを表示
-              Array.from({ length: 3 }).map((_, index) => <MealCardSkeleton key={index} />)
-            ) : recipes.length > 0 ? (
-              // レシピがある場合は表示
-              recipes.map((recipe) => <MealCard key={recipe.id} meal={recipe} />)
-            ) : (
-              // レシピがない場合はメッセージを表示
-              <div className="col-span-full text-center py-10">
-                <p className="text-muted-foreground">低糖質レシピが見つかりませんでした。</p>
-              </div>
-            )}
-          </div>
-        </TabsContent>
-
-        {/* 高タンパクレシピ */}
-        <TabsContent value="high-protein" className="mt-4">
-          {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading ? (
-              // ローディング中はスケルトンを表示
-              Array.from({ length: 3 }).map((_, index) => <MealCardSkeleton key={index} />)
-            ) : recipes.length > 0 ? (
-              // レシピがある場合は表示
-              recipes.map((recipe) => <MealCard key={recipe.id} meal={recipe} />)
-            ) : (
-              // レシピがない場合はメッセージを表示
-              <div className="col-span-full text-center py-10">
-                <p className="text-muted-foreground">高タンパクレシピが見つかりませんでした。</p>
-              </div>
-            )}
-          </div>
-        </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
-
