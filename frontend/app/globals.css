@@ -78,20 +78,20 @@
   @apply rounded-full px-3 py-1 text-xs font-medium;
 }
 
-.cute-divider {
+/* .cute-divider {
   height: 5px;
   background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 50%, #c7f6d4 100%);
   border-radius: 5px;
   margin: 1.5rem 0;
-}
+} */
 
-.cute-pattern-bg {
+/* .cute-pattern-bg {
   background-color: #fff;
   background-image: radial-gradient(#ffd1dc 0.5px, transparent 0.5px), radial-gradient(#e6e6fa 0.5px, #fff 0.5px);
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
   opacity: 0.1;
-}
+} */
 
 .meal-card {
   @apply cute-card bg-white overflow-hidden;
@@ -105,7 +105,7 @@
   @apply relative overflow-hidden;
 }
 
-.meal-card-image::after {
+/* .meal-card-image::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -113,7 +113,7 @@
   right: 0;
   height: 5px;
   background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 50%, #c7f6d4 100%);
-}
+} */
 
 .cute-tabs-trigger {
   @apply rounded-full px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-pastel-pink data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm;
@@ -138,10 +138,10 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.cute-text-decoration {
+/* .cute-text-decoration {
   position: relative;
   display: inline-block;
-}
+} */
 
 .cute-text-decoration::after {
   content: "";

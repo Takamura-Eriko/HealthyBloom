@@ -9,14 +9,14 @@ export default function Home() {
     <div className="flex flex-col gap-8 py-8">
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-16 relative">
         {/* 装飾的な花のイラスト - 左上 */}
-        <div className="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-20 pointer-events-none">
-          <Image src="/flower-decoration-1.svg" alt="花の装飾" width={120} height={120} className="w-full h-full" />
-        </div>
+        {/* <div className="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-20 pointer-events-none"> */}
+          {/* <Image src="/flower-decoration-1.svg" alt="花の装飾" width={120} height={120} className="w-full h-full" /> */}
+        {/* </div> */}
 
         {/* 装飾的な花のイラスト - 右下 */}
-        <div className="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-20 pointer-events-none">
-          <Image src="/flower-decoration-2.svg" alt="花の装飾" width={120} height={120} className="w-full h-full" />
-        </div>
+        {/* <div className="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-20 pointer-events-none"> */}
+          {/* <Image src="/flower-decoration-2.svg" alt="花の装飾" width={120} height={120} className="w-full h-full" /> */}
+        {/* </div> */}
 
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
           <div className="flex items-center justify-center mb-2">

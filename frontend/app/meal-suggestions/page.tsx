@@ -32,9 +32,20 @@ const nutritionTypeColors: Record<string, string> = {
   "low-cholesterol": "bg-pastel-mint text-green-700",
   "high-fiber": "bg-pastel-mint text-green-700",
   "low-fat": "bg-pastel-blue text-blue-700",
-  balanced: "bg-pastel-lavender text-purple-700",
+  "balanced": "bg-pastel-lavender text-purple-700",
   "low-carb": "bg-pastel-peach text-orange-700",
   "low-calorie": "bg-pastel-mint text-green-700",
+}
+
+// 曜日ごとのカラー設定
+const dayColors: Record<string, string> = {
+  月曜日: "bg-pink-200 text-pink-800",
+  火曜日: "bg-orange-200 text-orange-800",
+  水曜日: "bg-yellow-200 text-yellow-800",
+  木曜日: "bg-green-200 text-green-800",
+  金曜日: "bg-blue-200 text-blue-800",
+  土曜日: "bg-purple-200 text-purple-800",
+  日曜日: "bg-rose-200 text-rose-800",
 }
 
 // 食事提案カードコンポーネント
@@ -94,22 +105,30 @@ function MealCard({ meal }: { meal: Recipe }) {
   )
 }
 
+
+const mealTypeColors: Record<string, string> = {
+  朝食: "text-pink-600",
+  昼食: "text-orange-600",
+  夕食: "text-purple-600",
+}
+
+// 食事区分に対応するアイコンを定義
+const mealTypeIcons: Record<string, JSX.Element> = {
+  朝食: <Coffee className="h-4 w-4 text-primary" />,
+  昼食: <Utensils className="h-4 w-4 text-primary" />,
+  夕食: <ChefHat className="h-4 w-4 text-primary" />,
+};
+
 // 週間メニューの食事カードコンポーネント
 function WeeklyMealCard({ meal, mealType }: { meal: any; mealType: string }) {
-  const mealTypeIcons = {
-    朝食: <Coffee className="h-4 w-4 text-primary" />,
-    昼食: <Utensils className="h-4 w-4 text-primary" />,
-    夕食: <ChefHat className="h-4 w-4 text-primary" />,
-  }
-
-  const icon = mealTypeIcons[mealType as keyof typeof mealTypeIcons]
+  const icon = mealTypeIcons[mealType]
 
   return (
     <div className="cute-card bg-white p-3 h-full">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-1 mb-2">
           {icon}
-          <p className="text-xs font-medium text-primary">{mealType}</p>
+          <p className={`text-xs font-medium ${mealTypeColors[mealType]}`}>{mealType}</p>
         </div>
         {meal.isQuick && (
           <span className="cute-badge bg-pastel-pink text-primary text-xs px-2 py-0.5">
@@ -133,6 +152,7 @@ function WeeklyMealCard({ meal, mealType }: { meal: any; mealType: string }) {
     </div>
   )
 }
+
 
 // ローディングスケルトン
 function MealCardSkeleton() {
@@ -256,34 +276,27 @@ export default function MealSuggestionsPage() {
 
   return (
     <div className="flex flex-col gap-6 relative">
-      {/* 装飾的な花のイラスト - 左上 */}
-      <div className="absolute top-0 left-0 w-24 h-24 opacity-10 pointer-events-none">
-        <Image src="/flower-decoration-4.svg" alt="花の装飾" width={100} height={100} className="w-full h-full" />
-      </div>
-
+      
       {/* 装飾的な花のイラスト - 右下 */}
       <div className="absolute bottom-0 right-0 w-24 h-24 opacity-10 pointer-events-none">
-        <Image src="/flower-decoration-5.svg" alt="花の装飾" width={100} height={100} className="w-full h-full" />
+        {/* <Image src="/flower-decoration-5.svg" alt="花の装飾" width={100} height={100} className="w-full h-full" /> */}
       </div>
 
       <div className="text-center py-6">
         <div className="flex items-center justify-center mb-2">
-          <Flower className="h-6 w-6 text-primary mr-2" fill="#FFD1DC" />
-          <h1 className="text-3xl font-bold tracking-tight handwritten-heading">健康的な食事提案</h1>
-          <Flower className="h-6 w-6 text-primary ml-2" fill="#FFD1DC" />
+          <h1 className="text-3xl font-bold tracking-tight text-black ">健康的な食事提案</h1>
         </div>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          あなたの健康状態に合わせた食事メニューを提案します。栄養バランスの良い食事で、毎日を健やかに過ごしましょう♪
+        <p className="text-black max-w-2xl mx-auto ">
+          あなたの健康状態に合わせた食事メニューを提案します。<br />
+          栄養バランスの良い食事で、毎日を健やかに過ごしましょう♪
         </p>
-        <div className="cute-divider w-32 mx-auto mt-4"></div>
+        <div className="cute-divider w-32 mx-auto mt-4 "></div>
       </div>
 
       <Tabs defaultValue="weekly" className="w-full" onValueChange={handleTabChange}>
         <TabsList className="bg-pastel-lavender/30 p-1 rounded-full mb-6">
-          <TabsTrigger value="weekly" className="cute-tabs-trigger">
-            1週間プラン
-          </TabsTrigger>
-　　　　　</TabsList>
+          
+        </TabsList>
 
         {/* 1週間プラン */}
         
@@ -298,12 +311,11 @@ export default function MealSuggestionsPage() {
             <div className="relative">
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center mb-2">
-                  <Flower className="h-5 w-5 text-primary mr-2" fill="#FFD1DC" />
-                  <h2 className="text-2xl font-bold text-primary handwritten-heading">1週間の食事プラン</h2>
-                  <Flower className="h-5 w-5 text-primary ml-2" fill="#FFD1DC" />
+                  <h2 className="text-2xl font-bold text-primary ">1週間の食事プラン</h2>
                 </div>
-                <p className="text-muted-foreground text-center px-4">
-                  あなたの健康状態に合わせた1週間分の食事プランです。バランスの良い食事を心がけましょう♪
+                <p className="text-black text-center px-4">
+                  あなたの健康状態に合わせた1週間分の食事プランです。
+                  バランスの良い食事を心がけましょう♪
                 </p>
 
               </div>
@@ -333,7 +345,7 @@ export default function MealSuggestionsPage() {
                   {weeklyMenu.map((day) => (
                     <div key={day.day} className="border-2 border-pastel-pink rounded-2xl p-4 bg-white">
                       <div className="flex items-center mb-4">
-                        <div className="bg-pastel-pink text-primary rounded-full px-4 py-1 font-medium">{day.day}</div>
+                      <div className={`rounded-full px-4 py-1 font-bold tracking-wide text-sm ${dayColors[day.day]}`}>{day.day}</div>
                         <div className="h-px flex-1 bg-pastel-pink/30 ml-3"></div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -351,8 +363,7 @@ export default function MealSuggestionsPage() {
               )}
 
               <div className="mt-6 text-center">
-                <Button className="rounded-full bg-pastel-pink hover:bg-primary text-primary-foreground px-6">
-                  <Flower className="mr-2 h-4 w-4" fill="#FFF" />
+              <Button className="rounded-full bg-pastel-pink hover:bg-primary text-black px-6">
                   このプランを保存する
                 </Button>
               </div>
