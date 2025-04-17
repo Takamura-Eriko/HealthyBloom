@@ -1,0 +1,350 @@
+diff --git a/backend/gpt_output_debug.json b/backend/gpt_output_debug.json
+index b8275e9..916dc27 100644
+--- a/backend/gpt_output_debug.json
++++ b/backend/gpt_output_debug.json
+@@ -3,59 +3,41 @@
+     {
+       "day": "月曜日",
+       "breakfast": {
+-        "title": "全粒粉トーストとヨーグルト",
+-        "nutritionType": [
+-            "高繊維",
+-            "高タンパク"
+-        ],
+-        "cookingTime": 5,
++        "title": "豆腐と野菜のミックスジュース",
++        "nutritionType": ["高タンパク", "低脂肪"],
++        "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "時短！高タンパク豆腐丼",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
+-        "cookingTime": 10,
++        "title": "鶏胸肉と野菜のサラダ",
++        "nutritionType": ["高タンパク", "低脂肪"],
++        "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "減塩でも美味しい和風煮物",
+-        "nutritionType": [
+-            "低塩分",
+-            "高繊維"
+-        ],
+-        "cookingTime": 40,
++        "title": "白身魚の蒸し物と小松菜のおひたし",
++        "nutritionType": ["高タンパク", "低脂肪"],
++        "cookingTime": 30,
+         "isQuick": false
+       }
+     },
+     {
+       "day": "火曜日",
+       "breakfast": {
+-        "title": "オートミールとフルーツ",
+-        "nutritionType": [
+-            "高繊維",
+-            "低脂肪"
+-        ],
++        "title": "玄米ごはんと納豆",
++        "nutritionType": ["高繊維", "高タンパク"],
+         "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "野菜たっぷりサラダと鶏胸肉のグリル",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
++        "title": "豆腐と野菜の味噌汁",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "鯖の味噌煮と切り干し大根の煮物",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低糖質"
+-        ],
++        "title": "さばの塩焼きとひじきの煮物",
++        "nutritionType": ["高タンパク", "高繊維"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+@@ -63,29 +45,20 @@
+     {
+       "day": "水曜日",
+       "breakfast": {
+-        "title": "玄米ごはんと納豆",
+-        "nutritionType": [
+-            "高繊維",
+-            "高タンパク"
+-        ],
+-        "cookingTime": 5,
++        "title": "豆腐と野菜のスムージー",
++        "nutritionType": ["高タンパク", "低脂肪"],
++        "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "豆腐と野菜の炒め物",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
+-        "cookingTime": 10,
++        "title": "おにぎりと豆腐のみそ汁",
++        "nutritionType": ["高繊維", "高タンパク"],
++        "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "白身魚の蒸し物と春雨サラダ",
+-        "nutritionType": [
+-            "低塩分",
+-            "低脂肪"
+-        ],
++        "title": "鶏胸肉と野菜の煮物",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+@@ -93,29 +66,20 @@
+     {
+       "day": "木曜日",
+       "breakfast": {
+-        "title": "野菜スムージーと全粒粉パン",
+-        "nutritionType": [
+-            "高繊維",
+-            "低糖質"
+-        ],
++        "title": "全粒粉パンとヨーグルト",
++        "nutritionType": ["高繊維", "高タンパク"],
+         "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "キヌアと野菜のサラダ",
+-        "nutritionType": [
+-            "高タンパク",
+-            "高繊維"
+-        ],
++        "title": "豆腐と野菜のスープ",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "鶏むね肉のソテーとブロッコリーのスープ",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
++        "title": "豚肉と野菜の炒め物",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+@@ -123,29 +87,20 @@
+     {
+       "day": "金曜日",
+       "breakfast": {
+-        "title": "ヨーグルトとフルーツ",
+-        "nutritionType": [
+-            "低脂肪",
+-            "高タンパク"
+-        ],
+-        "cookingTime": 5,
++        "title": "玄米ごはんと味噌汁",
++        "nutritionType": ["高繊維", "高タンパク"],
++        "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "豆腐とツナのサラダ",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
+-        "cookingTime": 10,
++        "title": "豆腐と野菜のサラダ",
++        "nutritionType": ["高タンパク", "低脂肪"],
++        "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "鮭のホイル焼きと野菜の炒め物",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低糖質"
+-        ],
++        "title": "鶏胸肉とブロッコリーのソテー",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+@@ -153,29 +108,20 @@
+     {
+       "day": "土曜日",
+       "breakfast": {
+-        "title": "玄米ごはんと漬物",
+-        "nutritionType": [
+-            "高繊維",
+-            "低脂肪"
+-        ],
+-        "cookingTime": 5,
++        "title": "全粒粉パンとヨーグルト",
++        "nutritionType": ["高繊維", "高タンパク"],
++        "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "野菜たっぷりスープと全粒粉パン",
+-        "nutritionType": [
+-            "低脂肪",
+-            "高繊維"
+-        ],
++        "title": "豆腐と野菜の味噌汁",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "豆腐と野菜の煮物",
+-        "nutritionType": [
+-            "低塩分",
+-            "高繊維"
+-        ],
++        "title": "白身魚の蒸し物と小松菜のおひたし",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+@@ -183,29 +129,20 @@
+     {
+       "day": "日曜日",
+       "breakfast": {
+-        "title": "オートミールとフルーツ",
+-        "nutritionType": [
+-            "高繊維",
+-            "低糖質"
+-        ],
++        "title": "豆腐と野菜のミックスジュース",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 10,
+         "isQuick": true
+       },
+       "lunch": {
+-        "title": "鶏むね肉のサラダ",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低脂肪"
+-        ],
++        "title": "鶏胸肉と野菜のサラダ",
++        "nutritionType": ["高タンパク", "低脂肪"],
+         "cookingTime": 15,
+         "isQuick": true
+       },
+       "dinner": {
+-        "title": "鮭の塩焼きとひじきの煮物",
+-        "nutritionType": [
+-            "高タンパク",
+-            "低糖質"
+-        ],
++        "title": "さばの塩焼きとひじきの煮物",
++        "nutritionType": ["高タンパク", "高繊維"],
+         "cookingTime": 30,
+         "isQuick": false
+       }
+diff --git a/frontend/app/globals.css b/frontend/app/globals.css
+index 641484e..4df51e5 100644
+--- a/frontend/app/globals.css
++++ b/frontend/app/globals.css
+@@ -78,12 +78,6 @@
+   @apply rounded-full px-3 py-1 text-xs font-medium;
+ }
+ 
+-.cute-divider {
+-  height: 5px;
+-  background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 50%, #c7f6d4 100%);
+-  border-radius: 5px;
+-  margin: 1.5rem 0;
+-}
+ 
+ .cute-pattern-bg {
+   background-color: #fff;
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+index 60a99a5..4f4c9d2 100644
+--- a/frontend/package-lock.json
++++ b/frontend/package-lock.json
+@@ -54,10 +54,12 @@
+         "next-auth": "latest",
+         "next-themes": "^0.4.4",
+         "nodemailer": "latest",
++        "phosphor-react": "^1.4.1",
+         "react": "^19",
+         "react-day-picker": "8.10.1",
+         "react-dom": "^19",
+         "react-hook-form": "latest",
++        "react-icons": "^5.5.0",
+         "react-resizable-panels": "^2.1.7",
+         "recharts": "latest",
+         "sonner": "^1.7.1",
+@@ -5273,6 +5275,18 @@
+       "dev": true,
+       "license": "ISC"
+     },
++    "node_modules/phosphor-react": {
++      "version": "1.4.1",
++      "resolved": "https://registry.npmjs.org/phosphor-react/-/phosphor-react-1.4.1.tgz",
++      "integrity": "sha512-gO5j7U0xZrdglTAYDYPACU4xDOFBTJmptrrB/GeR+tHhCZF3nUMyGmV/0hnloKjuTrOmpSFlbfOY78H39rgjUQ==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=10"
++      },
++      "peerDependencies": {
++        "react": ">=16"
++      }
++    },
+     "node_modules/picocolors": {
+       "version": "1.1.1",
+       "resolved": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",
+@@ -5611,6 +5625,15 @@
+         "react": "^16.8.0 || ^17 || ^18 || ^19"
+       }
+     },
++    "node_modules/react-icons": {
++      "version": "5.5.0",
++      "resolved": "https://registry.npmjs.org/react-icons/-/react-icons-5.5.0.tgz",
++      "integrity": "sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==",
++      "license": "MIT",
++      "peerDependencies": {
++        "react": "*"
++      }
++    },
+     "node_modules/react-is": {
+       "version": "16.13.1",
+       "resolved": "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz",
+diff --git a/frontend/package.json b/frontend/package.json
+index bffcfef..ba8e3e8 100644
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -55,10 +55,12 @@
+     "next-auth": "latest",
+     "next-themes": "^0.4.4",
+     "nodemailer": "latest",
++    "phosphor-react": "^1.4.1",
+     "react": "^19",
+     "react-day-picker": "8.10.1",
+     "react-dom": "^19",
+     "react-hook-form": "latest",
++    "react-icons": "^5.5.0",
+     "react-resizable-panels": "^2.1.7",
+     "recharts": "latest",
+     "sonner": "^1.7.1",

@@ -13,12 +13,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 const nutritionTypeLabels: Record<string, string> = {
   "low-salt": "減塩",
   "low-sugar": "低糖質",
-  "high-protein": "高タンパク",
+  "high-protein": "高タンパク質",
   "healthy-fat": "健康脂質",
   "low-cholesterol": "低コレステロール",
   "high-fiber": "食物繊維",
   "low-fat": "低脂肪",
-  balanced: "バランス",
+  "balanced": "バランス",
   "low-carb": "低炭水化物",
   "low-calorie": "低カロリー",
 }
