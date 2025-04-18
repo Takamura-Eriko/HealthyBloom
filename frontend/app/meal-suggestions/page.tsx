@@ -21,31 +21,47 @@ const nutritionTypeLabels: Record<string, string> = {
   "balanced": "バランス",
   "low-carb": "低炭水化物",
   "low-calorie": "低カロリー",
-}
+};
+
 
 // 栄養タイプに対応する背景色
 const nutritionTypeColors: Record<string, string> = {
-  "low-salt": "bg-pastel-blue text-blue-700",
-  "low-sugar": "bg-pastel-lavender text-purple-700",
-  "high-protein": "bg-pastel-peach text-orange-700",
-  "healthy-fat": "bg-pastel-yellow text-yellow-700",
-  "low-cholesterol": "bg-pastel-mint text-green-700",
-  "high-fiber": "bg-pastel-mint text-green-700",
-  "low-fat": "bg-pastel-blue text-blue-700",
-  "balanced": "bg-pastel-lavender text-purple-700",
-  "low-carb": "bg-pastel-peach text-orange-700",
-  "low-calorie": "bg-pastel-mint text-green-700",
-}
+  "low-salt": "bg-blue-100 text-blue-800",
+  "low-sugar": "bg-pink-100 text-pink-700",
+  "high-protein": "bg-orange-100 text-orange-700",
+  "healthy-fat": "bg-yellow-100 text-yellow-700",
+  "low-cholesterol": "bg-green-100 text-green-700",
+  "high-fiber": "bg-lime-100 text-lime-700",
+  "low-fat": "bg-blue-100 text-blue-800",
+  "balanced": "bg-purple-100 text-purple-700",
+  "low-carb": "bg-orange-100 text-orange-700",
+  "low-calorie": "bg-emerald-100 text-emerald-700",
+};
+
+
+const normalizeNutritionType = (type: string): string => {
+  const map: Record<string, string> = {
+    "高タンパク": "high-protein",
+    "高タンパク質": "high-protein",
+    "高繊維": "high-fiber",
+    "食物繊維": "high-fiber",
+    "低カロリー": "low-calorie",
+    "低糖質": "low-sugar",
+    // 必要に応じて追加
+  };
+  return map[type] || type;
+};
+
 
 // 曜日ごとのカラー設定
 const dayColors: Record<string, string> = {
-  月曜日: "bg-pink-200 text-pink-800",
-  火曜日: "bg-orange-200 text-orange-800",
-  水曜日: "bg-yellow-200 text-yellow-800",
-  木曜日: "bg-green-200 text-green-800",
-  金曜日: "bg-blue-200 text-blue-800",
-  土曜日: "bg-purple-200 text-purple-800",
-  日曜日: "bg-rose-200 text-rose-800",
+  月曜日: "bg-pink-200 text-black-800",
+  火曜日: "bg-orange-200 text-black-800",
+  水曜日: "bg-yellow-200 text-black-800",
+  木曜日: "bg-green-200 text-black-800",
+  金曜日: "bg-blue-200 text-black-800",
+  土曜日: "bg-purple-200 text-black-800",
+  日曜日: "bg-rose-200 text-black-800",
 }
 
 // 食事提案カードコンポーネント
@@ -63,11 +79,17 @@ function MealCard({ meal }: { meal: Recipe }) {
       </div>
       <div className="p-5">
         <div className="flex flex-wrap gap-2 mb-3">
-          {meal.nutritionType.map((type) => (
-            <span key={type} className={`cute-badge ${nutritionTypeColors[type]}`}>
-              {nutritionTypeLabels[type] || type}
-            </span>
-          ))}
+          {meal.nutritionType.map((rawType: string) => {
+            const type = normalizeNutritionType(rawType);
+            const label = nutritionTypeLabels[type] || rawType;
+            const color = nutritionTypeColors[type] || "bg-gray-200 text-gray-700";
+            return (
+              <span key={rawType} className={`cute-badge ${color}`}>
+                {label}
+              </span>
+            );
+          })}
+
           {meal.isQuick && (
             <span className="cute-badge bg-pastel-pink text-primary">
               <Clock className="h-3 w-3 mr-1 inline" />
@@ -75,13 +97,18 @@ function MealCard({ meal }: { meal: Recipe }) {
             </span>
           )}
         </div>
+
         <h3 className="text-lg font-medium mb-2 text-primary">{meal.title}</h3>
         <p className="text-sm text-muted-foreground mb-4">{meal.description}</p>
+
         <div className="mb-4">
           <div className="flex items-center mb-2">
             <Clock className="h-4 w-4 mr-1 text-primary" />
-            <span className="text-sm text-muted-foreground">調理時間: 約{meal.cookingTime}分</span>
+            <span className="text-sm text-muted-foreground">
+              調理時間: 約{meal.cookingTime}分
+            </span>
           </div>
+
           <h4 className="font-medium mb-2 text-sm text-primary">主な食材</h4>
           <div className="flex flex-wrap gap-1">
             {meal.ingredients.map((ingredient) => (
@@ -94,16 +121,17 @@ function MealCard({ meal }: { meal: Recipe }) {
             ))}
           </div>
         </div>
+
         <Button className="w-full rounded-full bg-pastel-pink hover:bg-primary text-primary-foreground" asChild>
           <Link href={`/meal-suggestions/${meal.id}`}>
             詳細を見る
-            <Flower className="ml-2 h-4 w-4" fill="#FFF" />
           </Link>
         </Button>
       </div>
     </div>
-  )
+  );
 }
+
 
 
 const mealTypeColors: Record<string, string> = {
@@ -358,7 +386,7 @@ export default function MealSuggestionsPage() {
                 </div>
               ) : (
                 <div className="text-center py-10">
-                  <p className="text-muted-foreground">週間メニューが見つかりませんでした。</p>
+                  <p className="text-black">読み込み中...</p>
                 </div>
               )}
 

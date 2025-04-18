@@ -3,82 +3,82 @@
     {
       "day": "月曜日",
       "breakfast": {
-        "title": "バナナとヨーグルト",
+        "title": "全粒粉トーストとヨーグルト",
         "nutritionType": ["高繊維", "高タンパク"],
         "cookingTime": 5,
         "isQuick": true
       },
       "lunch": {
-        "title": "豆腐と野菜の炒め物",
+        "title": "時短！高タンパク豆腐丼",
         "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
-      },
-      "dinner": {
-        "title": "魚のホイル焼きと野菜のスープ",
-        "nutritionType": ["低塩分", "高繊維"],
-        "cookingTime": 30,
-        "isQuick": false
-      }
-    },
-    {
-      "day": "火曜日",
-      "breakfast": {
-        "title": "全粒粉のパンとスクランブルエッグ",
-        "nutritionType": ["高繊維", "高タンパク"],
         "cookingTime": 10,
         "isQuick": true
       },
-      "lunch": {
-        "title": "鶏肉とキヌアのサラダ",
-        "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
-      },
       "dinner": {
-        "title": "鯖の味噌煮と小松菜のおひたし",
+        "title": "減塩でも美味しい和風煮物",
         "nutritionType": ["低塩分", "高繊維"],
         "cookingTime": 40,
         "isQuick": false
       }
     },
     {
-      "day": "水曜日",
+      "day": "火曜日",
       "breakfast": {
-        "title": "オートミールとフルーツ",
-        "nutritionType": ["高繊維", "高タンパク"],
+        "title": "野菜たっぷりスムージー",
+        "nutritionType": ["高繊維", "低カロリー"],
         "cookingTime": 5,
         "isQuick": true
       },
       "lunch": {
-        "title": "豆腐ハンバーグとサラダ",
+        "title": "鶏むね肉のグリル",
         "nutritionType": ["高タンパク", "低脂肪"],
         "cookingTime": 20,
         "isQuick": false
       },
       "dinner": {
-        "title": "鶏むね肉の照り焼きとほうれん草のおひたし",
+        "title": "海藻と豆腐の味噌汁",
         "nutritionType": ["低塩分", "高繊維"],
         "cookingTime": 30,
         "isQuick": false
       }
     },
     {
+      "day": "水曜日",
+      "breakfast": {
+        "title": "玄米ごはんと納豆",
+        "nutritionType": ["高繊維", "高タンパク"],
+        "cookingTime": 20,
+        "isQuick": false
+      },
+      "lunch": {
+        "title": "サーモンとアボカドのサラダ",
+        "nutritionType": ["高タンパク", "低糖質"],
+        "cookingTime": 10,
+        "isQuick": true
+      },
+      "dinner": {
+        "title": "野菜たっぷり豆乳鍋",
+        "nutritionType": ["低塩分", "高繊維"],
+        "cookingTime": 40,
+        "isQuick": false
+      }
+    },
+    {
       "day": "木曜日",
       "breakfast": {
-        "title": "豆乳とプロテインシェイク",
-        "nutritionType": ["高タンパク"],
+        "title": "フルーツヨーグルトとクラッカー",
+        "nutritionType": ["低カロリー", "高タンパク"],
         "cookingTime": 5,
         "isQuick": true
       },
       "lunch": {
-        "title": "タラコと野菜の和風パスタ",
+        "title": "鶏むね肉とキノコの炒め物",
         "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
+        "cookingTime": 20,
+        "isQuick": false
       },
       "dinner": {
-        "title": "豆腐と野菜の鍋",
+        "title": "カボチャと豆腐のスープ",
         "nutritionType": ["低塩分", "高繊維"],
         "cookingTime": 30,
         "isQuick": false
@@ -87,63 +87,63 @@
     {
       "day": "金曜日",
       "breakfast": {
-        "title": "玄米とヨーグルト",
-        "nutritionType": ["高繊維", "高タンパク"],
-        "cookingTime": 5,
-        "isQuick": true
-      },
-      "lunch": {
-        "title": "鶏胸肉とブロッコリーのサラダ",
-        "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
-      },
-      "dinner": {
-        "title": "魚の蒸し物と野菜の煮物",
-        "nutritionType": ["低塩分", "高繊維"],
-        "cookingTime": 40,
-        "isQuick": false
-      }
-    },
-    {
-      "day": "土曜日",
-      "breakfast": {
-        "title": "オープンサンドイッチとヨーグルト",
-        "nutritionType": ["高繊維", "高タンパク"],
+        "title": "オートミールとフルーツ",
+        "nutritionType": ["高繊維", "低カロリー"],
         "cookingTime": 10,
         "isQuick": true
       },
       "lunch": {
-        "title": "ささみと野菜の炒め物",
+        "title": "鮭とブロッコリーのグリル",
         "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
+        "cookingTime": 20,
+        "isQuick": false
       },
       "dinner": {
-        "title": "豆腐と野菜の味噌汁",
+        "title": "野菜たっぷり和風パスタ",
         "nutritionType": ["低塩分", "高繊維"],
         "cookingTime": 30,
         "isQuick": false
       }
     },
     {
+      "day": "土曜日",
+      "breakfast": {
+        "title": "ベーコンエッグとトマト",
+        "nutritionType": ["高タンパク", "低糖質"],
+        "cookingTime": 10,
+        "isQuick": true
+      },
+      "lunch": {
+        "title": "豆腐と野菜の炒め物",
+        "nutritionType": ["高タンパク", "低脂肪"],
+        "cookingTime": 15,
+        "isQuick": false
+      },
+      "dinner": {
+        "title": "鶏むね肉と野菜のカレー",
+        "nutritionType": ["低塩分", "高繊維"],
+        "cookingTime": 40,
+        "isQuick": false
+      }
+    },
+    {
       "day": "日曜日",
       "breakfast": {
-        "title": "オートミールとフルーツ",
-        "nutritionType": ["高繊維", "高タンパク"],
+        "title": "プロテインスムージー",
+        "nutritionType": ["高タンパク", "低カロリー"],
         "cookingTime": 5,
         "isQuick": true
       },
       "lunch": {
-        "title": "鶏胸肉とキヌアのサラダ",
+        "title": "鶏むね肉のグリルとサラダ",
         "nutritionType": ["高タンパク", "低脂肪"],
-        "cookingTime": 15,
-        "isQuick": true
+        "cookingTime": 20,
+        "isQuick": false
       },
       "dinner": {
-        "title": "鯖の味噌煮と小松菜のおひたし",
+        "title": "豆腐と野菜の煮物",
         "nutritionType": ["低塩分", "高繊維"],
-        "cookingTime": 40,
+        "cookingTime": 30,
         "isQuick": false
       }
     }
