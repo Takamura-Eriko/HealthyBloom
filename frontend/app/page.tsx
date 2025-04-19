@@ -28,14 +28,14 @@ export default function Home() {
               <Button
                asChild
                size="lg"
-               className="rounded-full bg-pastel-pink hover:bg-primary text-black text-lg"
+               className="rounded-full bg-pink-300 hover:bg-primary text-black text-lg"
               >
               <Link href="/health-data">健康診断結果を入力</Link>
               </Button>
               <Button
                asChild
                size="lg"
-               className="rounded-full bg-pink-200 hover:bg-primary text-black text-lg"
+               className="rounded-full bg-pink-100 hover:bg-primary text-black text-lg"
               >
                <Link href="/meal-suggestions">食事提案をする</Link>
              </Button>
