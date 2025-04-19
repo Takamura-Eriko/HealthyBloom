@@ -49,12 +49,6 @@ export default function Navigation() {
       active: pathname === "/advice",
     },
     {
-      href: "/profile",
-      label: "マイページ",
-      icon: <User className="h-4 w-4 mr-2" />,
-      active: pathname === "/profile",
-    },
-    {
       href: "/payment",
       label: "プレミアムプラン",
       icon: <CreditCard className="h-4 w-4 mr-2" />,
@@ -80,33 +74,32 @@ export default function Navigation() {
     }
   }
 
-  // ユーザーのイニシャルを取得
   const getUserInitials = () => {
     if (!user || !user.displayName) return "ゲ"
-
     const nameParts = user.displayName.split(" ")
-    if (nameParts.length >= 2) {
-      return `${nameParts[0][0]}${nameParts[1][0]}`
-    }
-    return user.displayName[0]
+    return nameParts.length >= 2
+      ? `${nameParts[0][0]}${nameParts[1][0]}`
+      : user.displayName[0]
   }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
+        {/* 左側ロゴ＋メニュー */}
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Flower className="h-6 w-6 text-primary" fill="#FFD1DC" />
             <span className="font-bold">HealthyBloom</span>
           </Link>
-          <nav className="flex items-center space-x-2 text-sm font-medium">
+
+          <nav className="flex items-center space-x-2 text-base font-medium">
             {routes.map((route) => (
               <Link
                 key={route.href}
                 href={route.href}
                 className={cn(
                   "flex items-center px-3 py-2 rounded-md transition-colors hover:text-primary",
-                  route.active ? "text-primary" : "text-foreground/60",
+                  route.active ? "text-primary" : "text-foreground/60"
                 )}
               >
                 {route.icon}
@@ -116,6 +109,7 @@ export default function Navigation() {
           </nav>
         </div>
 
+        {/* モバイルメニュー */}
         <div className="flex md:hidden">
           <Button variant="ghost" size="icon" className="mr-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -126,6 +120,7 @@ export default function Navigation() {
           </Link>
         </div>
 
+        {/* ユーザー情報・ログイン/登録ボタン */}
         <div className="flex flex-1 items-center justify-end space-x-2">
           {user ? (
             <DropdownMenu>
@@ -170,8 +165,6 @@ export default function Navigation() {
           )}
         </div>
       </div>
-      
     </header>
   )
 }
-

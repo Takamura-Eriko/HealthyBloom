@@ -13,6 +13,7 @@ import {
   User
 } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";
+import { useContext } from "react"
 
 // import { createContext, useContext, useState, useEffect } from "react";
 // import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -135,4 +136,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // eslint-disable-next-line react/react-in-jsx-scope
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  return useContext(AuthContext)
 }
