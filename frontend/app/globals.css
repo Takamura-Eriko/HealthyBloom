@@ -47,17 +47,27 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 340 70% 70%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     letter-spacing: 0.01em;
     line-height: 1.6;
+
+    /* 背景画像設定 */
+    background-image: url("/images/flower-background.jpeg");
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: top left;
+    background-attachment: fixed;
+
+    /* fallback 背景色（画像読み込めない時） */
+    background-color: #fff;
   }
+
   h1,
   h2,
   h3,
@@ -68,121 +78,3 @@
     line-height: 1.4;
   }
 }
-
-/* 可愛らしいスタイルの追加 */
-.cute-card {
-  @apply rounded-3xl border-2 border-pastel-pink shadow-md transition-all duration-300 hover:shadow-lg;
-}
-
-.cute-badge {
-  @apply rounded-full px-3 py-1 text-xs font-medium;
-}
-
-/* .cute-divider {
-  height: 5px;
-  background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 50%, #c7f6d4 100%);
-  border-radius: 5px;
-  margin: 1.5rem 0;
-} */
-
-/* .cute-pattern-bg {
-  background-color: #fff;
-  background-image: radial-gradient(#ffd1dc 0.5px, transparent 0.5px), radial-gradient(#e6e6fa 0.5px, #fff 0.5px);
-  background-size: 20px 20px;
-  background-position: 0 0, 10px 10px;
-  opacity: 0.1;
-} */
-
-.meal-card {
-  @apply cute-card bg-white overflow-hidden;
-}
-
-.meal-card:hover {
-  transform: translateY(-5px);
-}
-
-.meal-card-image {
-  @apply relative overflow-hidden;
-}
-
-/* .meal-card-image::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 50%, #c7f6d4 100%);
-} */
-
-.cute-tabs-trigger {
-  @apply rounded-full px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-pastel-pink data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm;
-}
-
-.cute-button {
-  @apply rounded-full px-4 py-2 font-medium transition-colors;
-}
-
-.cute-icon {
-  @apply text-primary;
-}
-
-/* 柔らかい文字スタイル */
-.soft-text {
-  @apply font-medium text-primary;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.soft-heading {
-  @apply font-bold text-primary;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* .cute-text-decoration {
-  position: relative;
-  display: inline-block;
-} */
-
-.cute-text-decoration::after {
-  content: "";
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #ffd1dc 0%, #e6e6fa 100%);
-  border-radius: 3px;
-}
-
-/* 花のリストマーカー */
-ul.flower-list {
-  list-style: none;
-  padding-left: 1.5rem;
-}
-
-ul.flower-list li {
-  position: relative;
-}
-
-ul.flower-list li::before {
-  content: "✿";
-  position: absolute;
-  left: -1.5rem;
-  color: #ffd1dc;
-}
-
-/* 手書き風の見出し */
-.handwritten-heading {
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  letter-spacing: 0.03em;
-  line-height: 1.3;
-  position: relative;
-}
-
-.handwritten-heading::before {
-  content: "♡";
-  position: absolute;
-  left: -1.5rem;
-  color: #ffd1dc;
-}
-
