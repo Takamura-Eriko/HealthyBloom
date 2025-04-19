@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import { M_PLUS_Rounded_1c } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
-import Navigation from "@/components/navigation"
 import { AuthProvider } from "../lib/authProvider"
+import LayoutWithConditionalNavigation from "@/components/LayoutWithConditionalNavigation"
 
 const mplus = M_PLUS_Rounded_1c({
   weight: ["400", "500", "700"],
@@ -24,18 +24,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja">
-      <body className={`${mplus.className} bg-transparent`}>
+    <html lang="ja" className="overflow-x-hidden">
+      <body className={`${mplus.className} bg-transparent overflow-x-hidden`}>
         <AuthProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navigation />
-            <main className="flex-1 container mx-auto px-4 py-6">{children}</main>
-            <footer className="bg-primary/5 py-6">
-              <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                &copy; {new Date().getFullYear()} HealthyBloom - 主婦のための健康管理アプリ
-              </div>
-            </footer>
-          </div>
+          <LayoutWithConditionalNavigation>{children}</LayoutWithConditionalNavigation>
           <Toaster />
         </AuthProvider>
       </body>

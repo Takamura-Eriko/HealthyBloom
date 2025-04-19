@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { Flower, Utensils, Heart } from "lucide-react"
+import { useAuth } from "@/lib/authProvider"
 
 export default function Home() {
+  const { user } = useAuth()
+
   return (
     <div className="flex flex-col gap-8 py-8">
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-16 relative">
@@ -19,19 +22,48 @@ export default function Home() {
             食事提案や生活習慣の改善アドバイスを受けられます。
           </p>
 
-          {/* ボタンを下にずらす */}
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="rounded-full bg-pastel-pink hover:bg-primary text-black">
-              <Link href="/login">ログイン</Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild className="rounded-full border-pastel-pink text-primary">
-              <Link href="/register">新規登録</Link>
-            </Button>
-          </div>
+            {user ? (
+             <>
+              <Button
+               asChild
+               size="lg"
+               className="rounded-full bg-pastel-pink hover:bg-primary text-black text-lg"
+              >
+              <Link href="/health-data">健康診断結果を入力</Link>
+              </Button>
+              <Button
+               asChild
+               size="lg"
+               className="rounded-full bg-pink-200 hover:bg-primary text-black text-lg"
+              >
+               <Link href="/meal-suggestions">食事提案をする</Link>
+             </Button>
+            </>
+            ) : (
+            <>
+         <Button
+            asChild
+            size="lg"
+            className="rounded-full bg-pastel-pink hover:bg-primary text-black"
+             >
+            <Link href="/login">ログイン</Link>
+           </Button>
+           <Button
+            variant="outline"
+            size="lg"
+            asChild
+            className="rounded-full border-pastel-pink text-primary"
+           >
+            <Link href="/register">新規登録</Link>
+         </Button>
+         </>
+        )}
+       </div>
+
         </div>
       </section>
 
-      {/* 主な機能セクション */}
       <section className="container space-y-6 py-4">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
           <h2 className="text-3xl font-bold leading-[1.1] sm:text-3xl md:text-4xl">主な機能</h2>
@@ -40,10 +72,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* カード一覧 */}
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-
-          {/* 健康診断結果の管理 */}
           <Card className="cute-card">
             <CardHeader className="flex flex-col items-center gap-2 pb-0 pt-4">
               <Flower className="h-6 w-6 text-primary" fill="#FFD1DC" />
@@ -58,19 +87,9 @@ export default function Home() {
                 過去の推移をグラフで確認できます。
               </p>
             </CardContent>
-            <CardFooter className="px-4 pb-4">
-              {/* 
-              <Button variant="outline" size="sm" className="w-full rounded-full" asChild>
-                <Link href="/health-data">
-                  詳しく見る
-                  <Flower className="ml-2 h-4 w-4" fill="#FFD1DC" />
-                </Link>
-              </Button> 
-              */}
-            </CardFooter>
+            <CardFooter className="px-4 pb-4" />
           </Card>
 
-          {/* 食事提案 */}
           <Card className="cute-card">
             <CardHeader className="flex flex-col items-center gap-2 pb-0 pt-4">
               <Utensils className="h-6 w-6 text-primary" />
@@ -85,19 +104,9 @@ export default function Home() {
                 あなたに最適な食事を見つけられます。
               </p>
             </CardContent>
-            <CardFooter className="px-4 pb-4">
-              {/* 
-              <Button variant="outline" size="sm" className="w-full rounded-full" asChild>
-                <Link href="/meal-suggestions">
-                  詳しく見る
-                  <Utensils className="ml-2 h-4 w-4 text-primary" />
-                </Link>
-              </Button> 
-              */}
-            </CardFooter>
+            <CardFooter className="px-4 pb-4" />
           </Card>
 
-          {/* 生活習慣アドバイス */}
           <Card className="cute-card">
             <CardHeader className="flex flex-col items-center gap-2 pb-0 pt-4">
               <Heart className="h-6 w-6 text-primary" fill="#FFD1DC" />
@@ -112,18 +121,8 @@ export default function Home() {
                 簡単なリマインダー機能も利用できます。
               </p>
             </CardContent>
-            <CardFooter className="px-4 pb-4">
-              {/* 
-              <Button variant="outline" size="sm" className="w-full rounded-full" asChild>
-                <Link href="/advice">
-                  詳しく見る
-                  <Heart className="ml-2 h-4 w-4 text-primary" />
-                </Link>
-              </Button> 
-              */}
-            </CardFooter>
+            <CardFooter className="px-4 pb-4" />
           </Card>
-
         </div>
       </section>
     </div>
