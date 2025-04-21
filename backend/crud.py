@@ -97,3 +97,10 @@ def get_meal_plans_by_user(db: Session, user_id: UUID):
         .order_by(MealPlan.start_date.desc())
         .all()
     )
+
+
+def search_recipes(db: Session, query: str):
+    """
+    レシピの名前（name）に部分一致する検索結果を返す
+    """
+    return db.query(Recipe).filter(Recipe.name.ilike(f"%{query}%")).all()
