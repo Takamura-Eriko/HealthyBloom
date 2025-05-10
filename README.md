@@ -238,6 +238,7 @@
 
 ```bash
 ab -n 100 -c 10 http://localhost:8000/health-records
+```
 
 ## 🧾 ログ設計・運用方針
 
