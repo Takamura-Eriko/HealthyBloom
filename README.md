@@ -152,4 +152,59 @@
 
 📄 詳細は [tests/test_plan.md](./tests/test_plan.md) をご覧ください。
 
+## 🚀 運用・デプロイ設計
+
+### 📦 デプロイ環境
+
+- バックエンド：FastAPI + PostgreSQL
+- インフラ候補：
+  - ローカル開発用：Docker（PostgreSQL含む）
+  - 本番運用：Render, Railway, Fly.io, AWS Lambda（コスト最小）
+  - CI/CD：GitHub Actions（今後追加可）
+
+---
+
+### ⚙️ デプロイフロー（例：Render 使用時）
+
+1. GitHub リポジトリと Render を連携
+2. `main` ブランチに push すると自動デプロイ
+3. `render.yaml` または `Dockerfile` で環境定義
+4. 環境変数（Firebaseキー・DB接続情報など）を Render 側で設定
+
+---
+
+### 🛠 開発・運用フロー
+
+| 項目             | 方法                                    |
+|------------------|-----------------------------------------|
+| 開発ブランチ管理 | GitHub Flow（`main` + feature/test ブランチ） |
+| テスト           | `pytest`, `TESTING=1 pytest tests/`     |
+| 本番反映         | `main` にマージ → Renderで自動デプロイ |
+| Firebase連携     | `.env` / Renderの環境変数で制御         |
+
+---
+
+### 💰 運用コスト（想定）
+
+| 項目         | サービス例 | 月額費用（目安） |
+|--------------|------------|------------------|
+| Render（Web）| Render     | 約$0〜7          |
+| DB（PostgreSQL） | Supabase / Render | $0〜25（無料枠あり） |
+| Firebase     | 無料枠あり | 〜$0（ログインのみ） |
+
+---
+
+### 🔐 セキュリティとバックアップ
+
+- Firebaseのキーは `.env` 経由で読み込み
+- DB定期バックアップ（Supabase, Railway などで自動化）
+- ユーザー認証は Firebase Authentication に一任
+
+---
+
+## ✅ 今後の改善予定（任意）
+
+- CI/CDの自動テスト（GitHub Actions）
+- Dockerコンテナ化と本番用環境変数管理
+- 本番エラー監視ツール（Sentryなど）の導入
 
