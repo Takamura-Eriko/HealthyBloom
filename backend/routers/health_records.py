@@ -6,33 +6,44 @@ from crud import create_health_record, get_health_records
 from models import HealthRecord
 from fastapi.encoders import jsonable_encoder
 from utils.health_analysis import analyze_health_data
+from logging_config import logger  # ログの追加
 
 router = APIRouter()
 
 # 健診データの新規登録
 @router.post("/health-records", response_model=HealthRecordResponse)
 def create_record(record: HealthRecordCreate, db: Session = Depends(get_db)):
-    return create_health_record(db, record)
+    logger.info(f"新規健診データ登録リクエスト: user_id={record.user_id}")
+    created = create_health_record(db, record)
+    logger.info(f"健診データ登録成功: id={created.id}")
+    return created
 
 # 健診データの取得（ユーザー単位）
 @router.get("/health-records/{user_id}", response_model=list[HealthRecordResponse])
 def read_records(user_id: str, db: Session = Depends(get_db)):
+    logger.debug(f"健診データ取得リクエスト: user_id={user_id}")
     records = get_health_records(db, user_id)
     if not records:
+        logger.warning(f"健診データが見つかりません: user_id={user_id}")
         raise HTTPException(status_code=404, detail="健康診断データが見つかりません")
+    logger.info(f"健診データ取得成功: 件数={len(records)} user_id={user_id}")
     return records
 
 # 健診データの全件取得（テストや管理者用）
 @router.get("/health-records", response_model=list[HealthRecordResponse])
 def read_all_records(db: Session = Depends(get_db)):
+    logger.info("全健診データ取得リクエスト")
     records = db.query(HealthRecord).all()
+    logger.info(f"全健診データ取得成功: 件数={len(records)}")
     return records
 
 # 健診データの更新
 @router.put("/health-records/{id}", response_model=HealthRecordUpdate)
 def update_health_record(id: str, record_update: HealthRecordUpdate, db: Session = Depends(get_db)):
+    logger.debug(f"健診データ更新リクエスト: id={id}")
     db_record = db.query(HealthRecord).filter(HealthRecord.id == id).first()
     if not db_record:
+        logger.warning(f"更新対象データが見つかりません: id={id}")
         raise HTTPException(status_code=404, detail="Record not found")
     
     for key, value in record_update.dict(exclude_unset=True).items():
@@ -40,27 +51,34 @@ def update_health_record(id: str, record_update: HealthRecordUpdate, db: Session
     
     db.commit()
     db.refresh(db_record)
+    logger.info(f"健診データ更新完了: id={id}")
     return db_record
 
 # 健診データの削除
 @router.delete("/health-records/{id}", response_model=dict)
 def delete_health_record(id: str, db: Session = Depends(get_db)):
+    logger.debug(f"健診データ削除リクエスト: id={id}")
     db_record = db.query(HealthRecord).filter(HealthRecord.id == id).first()
     if not db_record:
+        logger.warning(f"削除対象データが見つかりません: id={id}")
         raise HTTPException(status_code=404, detail="Record not found")
     
     db.delete(db_record)
     db.commit()
+    logger.info(f"健診データ削除完了: id={id}")
     return {"message": "Record deleted successfully"}
 
 # 栄養タイプ判定エンドポイント
 @router.get("/health/recommendation/{user_id}", response_model=list[str])
 def get_nutrition_recommendation(user_id: str, db: Session = Depends(get_db)):
+    logger.info(f"栄養タイプ判定リクエスト: user_id={user_id}")
     records = get_health_records(db, user_id)
     if not records:
+        logger.warning(f"栄養タイプ判定失敗：データなし user_id={user_id}")
         raise HTTPException(status_code=404, detail="健診データが見つかりません")
 
     latest = sorted(records, key=lambda x: x.date, reverse=True)[0]
     latest_dict = jsonable_encoder(latest)
     nutrition_types = analyze_health_data(latest_dict)
+    logger.info(f"栄養タイプ判定成功: user_id={user_id}, 結果={nutrition_types}")
     return nutrition_types

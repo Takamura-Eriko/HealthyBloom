@@ -1,5 +1,4 @@
-import os  # ← 追加
-
+import os
 import firebase_admin
 from firebase_admin import auth, credentials
 from pydantic import BaseModel
@@ -7,27 +6,32 @@ from fastapi import APIRouter, Depends, HTTPException
 from database import get_db
 from sqlalchemy.orm import Session
 import models
-import schemas  # 追加
-from passlib.context import CryptContext  # パスワードハッシュ化
+import schemas
+from passlib.context import CryptContext
+from logging_config import logger  # ログ追加
 
-# 🔽 ここを条件付きで初期化
+# Firebase 初期化（TESTING=1 ならスキップ）
 if os.getenv("TESTING") != "1":
     cred = credentials.Certificate("firebase_credentials.json")
     if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
+        logger.info("Firebase initialized")
 
 router = APIRouter()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")  # パスワードのハッシュ化設定
 
 class Token(BaseModel):
     token: str
 
+
 def verify_firebase_token(token: str):
     try:
         return auth.verify_id_token(token)
-    except:
+    except Exception as e:
+        logger.error(f"トークン検証失敗: {e}")
         raise HTTPException(status_code=401, detail="Invalid token")
+
 
 def create_user(user_data: schemas.UserCreate):
     try:
@@ -38,23 +42,25 @@ def create_user(user_data: schemas.UserCreate):
             display_name=user_data.name,
             disabled=False
         )
-        print('Successfully created new user: {0}'.format(user.uid))
+        logger.info(f"Firebase user created: {user.uid}")
+        return user
     except Exception as e:
-        print('Error creating new user:', e)
+        logger.error(f"Firebase user creation failed: {e}")
+        return None
+
 
 @router.post("/auth/signup")
 async def signup(token_request: Token, user_data: schemas.UserCreate, db: Session = Depends(get_db)):
-    print("###auth.py signup###")
-    print(f"Received Token: {token_request.token}")
-    print(f"Received User Data: {user_data}")
+    logger.debug("Signup endpoint called")
+    logger.debug(f"Token received: {token_request.token}")
+    logger.debug(f"User data received: {user_data}")
 
-    # Firebase トークン検証
     user = create_user(user_data)
-   
-    # パスワードのハッシュ化
+    if user is None:
+        raise HTTPException(status_code=500, detail="Firebase user creation failed")
+
     hashed_password = pwd_context.hash(user_data.password)
 
-    # 新規ユーザーを作成
     new_user = models.User(
         email=user_data.email,
         name=user_data.name,
@@ -65,6 +71,8 @@ async def signup(token_request: Token, user_data: schemas.UserCreate, db: Sessio
     db.commit()
     db.refresh(new_user)
 
+    logger.info(f"User registered in DB: {new_user.email}")
+
     return {
         "message": "User registration successful",
         "user": {
@@ -74,22 +82,26 @@ async def signup(token_request: Token, user_data: schemas.UserCreate, db: Sessio
         },
     }
 
+
 @router.post("/auth/login")
 async def login(token_request: Token, db: Session = Depends(get_db)):
-    print("###auth.py router.post###")
-    print(f"auth.py Received Token: {token_request.token}")
+    logger.debug("Login endpoint called")
+    logger.debug(f"Token received: {token_request.token}")
 
     decoded_token = verify_firebase_token(token_request.token)
-    user_uid = decoded_token.get("uid")
     user_email = decoded_token.get("email")
 
     if not user_email:
+        logger.warning("Token did not contain an email")
         raise HTTPException(status_code=400, detail="Email not found in token")
 
     user = db.query(models.User).filter(models.User.email == user_email).first()
 
     if user is None:
+        logger.warning(f"User not found in DB: {user_email}")
         raise HTTPException(status_code=404, detail="User not found")
+
+    logger.info(f"Login successful: {user.email}")
 
     return {
         "message": "Authentication successful",
@@ -100,6 +112,8 @@ async def login(token_request: Token, db: Session = Depends(get_db)):
         },
     }
 
+
 @router.get("/protected")
 def protected_route(token: str = Depends(verify_firebase_token)):
+    logger.info("Protected route accessed")
     return {"message": "認証成功", "user": token}

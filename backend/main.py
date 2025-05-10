@@ -3,6 +3,7 @@ import sys
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from logging_config import logger
 
 # .env ファイルの読み込み
 load_dotenv()
@@ -26,6 +27,8 @@ Base.metadata.create_all(bind=engine)
 
 # FastAPI アプリの作成
 app = FastAPI()
+
+logger.info("アプリ起動: FastAPI initialized")
 
 # CORS の設定
 app.add_middleware(
