@@ -143,5 +143,9 @@
   - デプロイメント前にテストがすべて通過していることを確認
   - 自動デプロイメントを設定（例: AWSに自動でデプロイ）
 
-[動画を見る](./HealthyBloom_compressed.mp4)
+## 🌱 プロジェクト紹介動画
+
+📽️ [HealthyBloom を見る](./HealthyBloom_compressed.mp4)  
+※「View raw」を押すと動画が再生されます。
+
 
