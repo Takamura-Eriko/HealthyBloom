@@ -1,3 +1,5 @@
+import os  # ← 追加
+
 import firebase_admin
 from firebase_admin import auth, credentials
 from pydantic import BaseModel
@@ -8,9 +10,11 @@ import models
 import schemas  # 追加
 from passlib.context import CryptContext  # パスワードハッシュ化
 
-cred = credentials.Certificate("firebase_credentials.json")
-if not firebase_admin._apps:
-    firebase_admin.initialize_app(cred)
+# 🔽 ここを条件付きで初期化
+if os.getenv("TESTING") != "1":
+    cred = credentials.Certificate("firebase_credentials.json")
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
 
 router = APIRouter()
 
@@ -24,19 +28,19 @@ def verify_firebase_token(token: str):
         return auth.verify_id_token(token)
     except:
         raise HTTPException(status_code=401, detail="Invalid token")
-   
+
 def create_user(user_data: schemas.UserCreate):
     try:
-       user = auth.create_user(
-           email=user_data.email,
-           email_verified=False,
-           password=user_data.password,
-           display_name=user_data.name,
-           disabled=False
-       )
-       print('Successfully created new user: {0}'.format(user.uid))
+        user = auth.create_user(
+            email=user_data.email,
+            email_verified=False,
+            password=user_data.password,
+            display_name=user_data.name,
+            disabled=False
+        )
+        print('Successfully created new user: {0}'.format(user.uid))
     except Exception as e:
-       print('Error creating new user:', e)
+        print('Error creating new user:', e)
 
 @router.post("/auth/signup")
 async def signup(token_request: Token, user_data: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -70,11 +74,10 @@ async def signup(token_request: Token, user_data: schemas.UserCreate, db: Sessio
         },
     }
 
-
 @router.post("/auth/login")
 async def login(token_request: Token, db: Session = Depends(get_db)):
     print("###auth.py router.post###")
-    print(f"auth.py Received Token: {token_request.token}")  # デバッグ用
+    print(f"auth.py Received Token: {token_request.token}")
 
     decoded_token = verify_firebase_token(token_request.token)
     user_uid = decoded_token.get("uid")
@@ -97,11 +100,6 @@ async def login(token_request: Token, db: Session = Depends(get_db)):
         },
     }
 
-
 @router.get("/protected")
 def protected_route(token: str = Depends(verify_firebase_token)):
-    """
-    認証済みユーザーのみがアクセスできるエンドポイント
-    """
     return {"message": "認証成功", "user": token}
-
