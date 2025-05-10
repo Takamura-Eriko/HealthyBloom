@@ -148,4 +148,8 @@
 📽️ [HealthyBloom を見る](./HealthyBloom_compressed.mp4)  
 ※「View raw」を押すと動画が再生されます。
 
+## 🧪 テスト設計書
+
+📄 詳細は [tests/test_plan.md](./tests/test_plan.md) をご覧ください。
+
 
