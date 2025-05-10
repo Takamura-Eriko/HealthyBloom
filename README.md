@@ -239,4 +239,22 @@
 ```bash
 ab -n 100 -c 10 http://localhost:8000/health-records
 
+## 🧾 ログ設計・運用方針
+
+### バックエンド（FastAPI）
+
+- Python標準ライブラリ `logging` を使用し、`logging_config.py` に設定を集約
+- ログは `INFO`, `DEBUG`, `WARNING`, `ERROR` のレベルで出力
+- 主要API処理に `logger` を挿入して運用・監視を想定
+
+#### 使用例：
+
+```python
+from logging_config import logger
+
+logger.info("ユーザー登録完了")
+logger.warning("ユーザー情報なし")
+logger.error("トークン認証失敗")
+
+
 
