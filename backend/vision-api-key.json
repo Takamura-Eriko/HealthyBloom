@@ -1,13 +1,1 @@
-{
-  "type": "service_account",
-  "project_id": "healthybloom",
-  "private_key_id": "49b6ffb396c0bdeda11a030b973012a73f4abf8f",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWGlNXJucYIFW1\nR93BbtHa5hhiAKderTTqP5DbwJXvd+Q5uHxEYx8ky/o/6A4pI28k3Tqhm5/oef0t\njQ9Ebs5ZjF3G0/e0FlmfBfXP4Lw0xwmxA2HKNhucAREZDtamiewnJTUaiVuQqt1C\nH5KDA01IuWDLhbxN4FXe9vkbyia4wjWWzEMDXrhCktrmTL/afsSl4xdeet6gVMJT\nTlXAVMr6Exnru/qJAQGCVag4KJh9jBQWDDFJGf0e2GnnMXUsWX4Kn2QLI0Uo/DgA\nz0Raszfo1ppjayX3j5ltdEC+9Ge37DMMRyigW4MxPVB+EXh77jrB7Q0bAPGlA6w2\nKSJRaWWpAgMBAAECggEAGnpFVjvKCwL1K3ekYfEy+nqZNXxpCbXi/ik9W85ChI3x\nB8+HuCaGAV8r4ycDjHUwL2AI7iX+FKukIetelJM5OimdBywv5ygEIh2SiVtax7KO\nfpeaoelegGvdwL5R1enBavxQvEAbk07Yncfk99BWyyvMK8qI93HJo/2L3r+PigqO\n5aIC5oTTGrUjXuiR9cT5pdwwCYNT1wLeuUTmTsDMpF/61Mqtl9gDafHhjMHkaAmi\nB6XvyiCJgmH43vX6Ew4ik+Y2CSiUlunLol5j2kWZsxG2ROE8PZ2SaMtZgZJEP6IE\nXm6e0aWjcfq2uCb4z5XOfJmhpl4UOnkGcnw6Z6m8yQKBgQDLgGa0428zrYFpQU2c\niYL2oLGXJ1oSlTjNQ99NzpotLnFm3RkWuI5MJmayQu0Ag4Flmy9c1b5fMeUESSOn\nR5yoeHuEC7Na/9g2uP86jQZ0LNjE0tFOsEMNQ7SosZC+DxlKIVplfqhVJf0Y6NZe\nK+4e9GkenyqB3szMD2kz1Vn9jQKBgQC802D4dhr+4ovBsgTSJlLsLGoo1EdU3a+7\nhrCCnuVEze6Ug5pHPfMbW2U75drUiDUs1FlIWlPXWQQFkVMEBlN1E3T1QmCE1AUt\n0f40U/4Z+6AW8a6IPMuwWZXpXkEnm5kJFWA3qRSaGxpKXUSPKsXsNJ3vQkHYhBjC\n0ieDqZ57jQKBgE5KNrkuqnBqNthEjFRFvwGc7tWlCQ0PJYwqqXUon730GSKmuuk3\n1V7Mg0PfZYiGDzkEy+LeRGAhNOdCMBpB/a3+tB4n1jeTKB5da6ud57a4LikCpg2s\n2A75Vj50GahU7LjNPha/9IjVlZqIsTgHlJOKGgry1wqhqY5z+1g6o2VdAoGAEnLI\nf53yZ0K1Ctictfd+lIqGWLTcv0Llf3naVvi1R7KjA6mT8i/wR5T3YBHF/ovMPjQF\nAReqJ1kQFocrSDJiBwc+nxO8IF4in2Zr4qruIZW+/17fgXoHIJSwG9vUm80M96E6\nBFYlqCTLvcY9A4vXSIuffpfHnSLS1H351FhHHqUCgYEAmedP13wCx4BANli6dxns\nERnnAFumdQzIVHt6xpMyUksMC1VAgdCymqE/Ib0uyR5sVXsWEVG2mPNTUqXs2ucN\nV3UVfZoUFWsVb9pkG8UOk5jgbdBKGy5gqERNBI/rP9Z03r8WRsiSmy9QuTTN0kJc\nPqNsOkLq5yw0X0CdNssV7bE=\n-----END PRIVATE KEY-----\n",
-  "client_email": "vision-api-sa@healthybloom.iam.gserviceaccount.com",
-  "client_id": "113893852194964899862",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vision-api-sa%40healthybloom.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
+
